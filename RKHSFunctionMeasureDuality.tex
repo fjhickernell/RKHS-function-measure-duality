@@ -1,0 +1,64 @@
+\documentclass{amsart}
+\usepackage{mathtools,upref,siunitx,upquote,fancyvrb,color}
+\usepackage[hyphens]{url}
+\usepackage[utf8]{inputenc}
+\input{FJHDef}
+
+\usepackage{algpseudocode}
+\usepackage{algorithm, algorithmicx}
+\algnewcommand\algorithmicparam{\textbf{Parameters:}}
+\algnewcommand\PARAM{\item[\algorithmicparam]}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\RETURN{\State \textbf{Return }}
+
+\DeclareMathOperator{\distdens}{\overset{\text{PDF}}{\sim}}
+
+\textwidth 6.5in
+\hoffset -0.7in
+
+
+\allowdisplaybreaks %allow equations to span multiple pages
+
+
+\begin{document}
+\title{The Duality Between Functions and Measures in Reproducing Kernel Hilbert Spaces}
+\author{Fred J. Hickernell}
+
+
+\maketitle
+
+\section{Duality in $\reals^d$}
+
+Let $(\reals^d,\ip[\cf]{\cdot}{\cdot})$ be the Hilbert space defined by the inner product 
+\begin{equation*}
+    \ip[\cf]{\vf}{\vg} := \vf^T \mA \vg \qquad \forall \vf, \vg \in \reals^d.
+\end{equation*}
+where $\mA$ is a symmetric, strictly positive definite matrix.  Let $\mK :=  \mA^{-1}$.  We also define a Hilbert space $(\reals^d,\ip[\cm]{\cdot}{\cdot})$ by the inner product
+\begin{equation*}
+    \ip[\cm]{\vmu}{\vnu} := \vmu^T \mK \vnu \qquad \forall \vmu, \vnu \in \reals^d.
+\end{equation*}
+Note that there is a \emph{one-to-one and onto, isometric(?) mapping} $\vT: \reals^d \to \reals^d$ defined by $\vT(\vmu) := \mK \vmu$ such that 
+\begin{equation*}
+    \ip[\cf]{\vT(\mu)}{\vT(\vnu)} := \bigl(\vT(\mu)\bigr)^T \mA \bigl(\vT(\nu)\bigr) = \vmu^T \mK \mA \mK \vnu = \vmu^T \mK \vnu = \ip[\cm]{\vmu}{\vnu} \qquad \forall \vmu, \vnu \in \reals^d.
+\end{equation*}
+
+If $\vK_1, \ldots, \vK_d$ denote the columns of $\mK$, then there is a \emph{reproducing property}:
+\begin{equation*}
+    \ip[\cf]{\vK_x}{\vf} = \vK_x \mA \vf = \ve_x^T \vf = f_x \qquad \forall \vf \in \reals^d, \ x \in \{1, \ldots, d\},
+\end{equation*}
+where $\ve_x := (0, \ldots, 0,\underbrace{1}_{x^{\text{th}} \text{ position}}, 0 \ldots, 0)^T$ and $\vf = (f_1, \ldots, f_d)^T$.  In other words, $ \ip[\cf]{\vK_x}{\vf}$ reproduces the $x^{\text{th}}$ element of $f$.
+
+
+Let's now write these exact  in terms of 
+
+
+
+\section{Duality in Arbitrary Reproducing Kernel Hilbert Spaces}
+
+
+
+\bibliographystyle{amsplain}
+\bibliography{FJH23,FJHown23}
+
+\end{document}
