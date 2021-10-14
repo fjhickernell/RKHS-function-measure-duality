@@ -23,6 +23,11 @@
 \def\overstrike#1{ 
 \settowidth{\overwdth}{#1}\makebox[0pt][l]{\rule[0.5ex]{\overwdth}{0.1ex}}#1}
 
+\makeatletter
+\newcommand*\bigcdot{\mathpalette\bigcdot@{.7}}
+\newcommand*\bigcdot@[2]{\mathbin{\vcenter{\hbox{\scalebox{#2}{$\m@th#1\bullet$}}}}}
+\makeatother
+
 \def\abs#1{\ensuremath{\left \lvert #1 \right \rvert}}
 \newcommand{\normabs}[1]{\ensuremath{\lvert #1 \rvert}}
 \newcommand{\bigabs}[1]{\ensuremath{\bigl \lvert #1 \bigr \rvert}}
@@ -254,6 +259,7 @@
 \newcommand{\tvf}{\tilde{\vf}}
 \newcommand{\tcf}{\widetilde{\cf}}
 \newcommand{\tg}{\tilde{g}}
+\newcommand{\tvg}{\widetilde{\vg}}
 \newcommand{\tG}{\widetilde{G}}
 \newcommand{\tildeh}{\tilde{h}}
 \newcommand{\tH}{\widetilde{H}}
@@ -351,6 +357,7 @@
 \newcommand{\cb}{\mathcal{B}}
 \providecommand{\cc}{\mathcal{C}}
 \newcommand{\cd}{\mathcal{D}}
+\newcommand{\ce}{\mathcal{E}}
 \newcommand{\cf}{\mathcal{F}}
 \newcommand{\cg}{\mathcal{G}}
 \newcommand{\ch}{\mathcal{H}}

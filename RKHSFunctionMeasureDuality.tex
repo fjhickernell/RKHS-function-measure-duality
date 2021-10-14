@@ -1,8 +1,11 @@
-\documentclass{amsart}
+\documentclass[reqno]{amsart}
 \usepackage{mathtools,upref,siunitx,upquote,fancyvrb,color}
+\usepackage{cleveref}
 \usepackage[hyphens]{url}
 \usepackage[utf8]{inputenc}
 \input{FJHDef}
+
+\newtheorem{theorem}{Theorem}
 
 \usepackage{algpseudocode}
 \usepackage{algorithm, algorithmicx}
@@ -28,7 +31,13 @@
 
 \maketitle
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Duality in $\reals^d$}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Vectors and Matrices}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Let $(\reals^d,\ip[\cf]{\cdot}{\cdot})$ be the Hilbert space defined by the inner product 
 \begin{equation*}
@@ -38,10 +47,15 @@ where $\mA$ is a symmetric, strictly positive definite matrix.  Let $\mK :=  \mA
 \begin{equation*}
     \ip[\cm]{\vmu}{\vnu} := \vmu^T \mK \vnu \qquad \forall \vmu, \vnu \in \reals^d.
 \end{equation*}
-Note that there is a \emph{one-to-one and onto, isometric(?) mapping} $\vT: \reals^d \to \reals^d$ defined by $\vT(\vmu) := \mK \vmu$ such that 
+Note that there is a \emph{one-to-one and onto, isometric(?) mapping} $\vT: \reals^d \to \reals^d$ defined by 
+\[
+\vT(\vmu) := \mK \vmu
+\]
+such that 
 \begin{equation*}
-    \ip[\cf]{\vT(\mu)}{\vT(\vnu)} := \bigl(\vT(\mu)\bigr)^T \mA \bigl(\vT(\nu)\bigr) = \vmu^T \mK \mA \mK \vnu = \vmu^T \mK \vnu = \ip[\cm]{\vmu}{\vnu} \qquad \forall \vmu, \vnu \in \reals^d.
+    \ip[\cf]{\vT(\mu)}{\vT(\vnu)} = \bigl(\vT(\mu)\bigr)^T \mA \bigl(\vT(\nu)\bigr) = \vmu^T \mK \mA \mK \vnu = \vmu^T \mK \vnu = \ip[\cm]{\vmu}{\vnu} \qquad \forall \vmu, \vnu \in \reals^d.
 \end{equation*}
+
 
 If $\vK_1, \ldots, \vK_d$ denote the columns of $\mK$, then there is a \emph{reproducing property}:
 \begin{equation*}
@@ -49,12 +63,125 @@ If $\vK_1, \ldots, \vK_d$ denote the columns of $\mK$, then there is a \emph{rep
 \end{equation*}
 where $\ve_x := (0, \ldots, 0,\underbrace{1}_{x^{\text{th}} \text{ position}}, 0 \ldots, 0)^T$ and $\vf = (f_1, \ldots, f_d)^T$.  In other words, $ \ip[\cf]{\vK_x}{\vf}$ reproduces the $x^{\text{th}}$ element of $f$.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Functions and Measures}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Let's now rewrite these ideas in terms of functions and measures.  Let $\Omega = \{1, \ldots, d\}$, and let $\ce = 2^\Omega$.  Define a vector space of functions with it's inner produce:
+\begin{equation*}
+    \cf : = \{f : \Omega \to \reals\}, \qquad \ip[\cf]{f}{g} := \sum_{t,x=1}^d f(t) A(t,x) g(x),
+\end{equation*}
+where $\bigl( A(t,x) \bigr)_{t,x = 1}^d$ is a symmetric, positive definite matrix with inverse $\bigl( K(t,x) \bigr)_{t,x = 1}^d$.  This means that
+\begin{equation} \label{eq:AKeqI}
+    \sum_{t=1}^d A(s,t)K(t,x) = \begin{cases} 1, & s=x, \\ 0, & s\ne x. \end{cases}
+\end{equation}
 
-Let's now write these exact  in terms of 
+Define a vector space of measures with it's inner product:
+\begin{equation*}
+    \cm : = \{\text{all measures } (\Omega, \ce, \mu) \}, \quad 
+    \ip[\cm]{\mu}{\nu} := \int_{\Omega \times \Omega} K(t,x) \, (\mu \times \nu) (\dif t \times \dif x) = \sum_{t,x=1}^d \mu(\{t\}) K(t,x) g(\{x\}),
+\end{equation*}
+
+Note that 
+\[
+K(\cdot,t) \in \cf \qquad \forall t \in \Omega.
+\]
+Moreover, we have the reproducing property:
+\begin{align*}
+\ip[\cf]{K(\cdot,s)}{f} &=  \sum_{t,x=1}^d K(t,s) A(t,x) f(x) 
+= \sum_{x=1}^d f(x) \biggl[\sum_{t}^d K(t,s) A(t,x) \biggr] \\
+& = f(s) \qquad \text{by \eqref{eq:AKeqI}}.
+\end{align*}
+
+
+Define the \emph{one-to-one and onto, isometric(?) mapping} $T : \cm \to \cf$ by 
+\begin{gather*}
+    T(\mu)(x) := \ip[\cf \times \cm]{K(\cdot, x)}{\mu} = \int_\Omega K(t, x) \, \mu(\dif t) = \sum_{t=1}^d K(t,x) \mu(\{t\}) \qquad \forall x \in \Omega, \mu \in \cm, \\
+    \intertext{where $ \ip[\cf \times \cm]{\cdot}{\cdot} : \cf \times \cm \to \reals$ is a real, bilinear function defined by} 
+    \ip[\cf \times \cm]{f}{\mu} := \int_\Omega f \, \mu(\dif x) = \sum_{x=1}^d f(x) \mu(\{x\}) \qquad \forall f \in \cf, \ \  \mu \in \cm.
+\end{gather*}
+The following duality relationship holds:  for all $\mu, \nu \in \cm$, if $f = T(\mu)$ and $g = T (\nu)$, then 
+\begin{align*}
+    \ip[\cf]{f}{g} 
+    & = \sum_{t,x=1}^d f(t) A(t,x) g(x)
+    = \sum_{s,t,x=1}^d f(t) A(t,x)  K(s,x) \nu(\{s\})  \\
+    &
+    = \sum_{s,x=1}^d \biggl [ f(t) \nu(\{s\}) \sum_{t=1}^d A(t,x)  K(s,x) \biggr]
+    = \sum_{t=1}^d f(t) \nu(\{t\}) = \ip[\cf \times \cm]{f}{\nu} \\
+    & = \sum_{s,t=1}^d K(s,t) \mu(\{s\}) \nu(\{t\}) =  \ip[\cm]{\mu}{\nu} .
+\end{align*}
+
+We want to generalize these ideas to 
+\begin{itemize}
+    \item general Hilbert spaces, $(\cf, \ip[\cf]{\cdot}{\cdot})$  of functions $f : \Omega \to \reals$ with reproducing kernels, $K$, and 
+    \item corresponding Hilbert spaces, $(\cm, \ip[\cm]{\cdot}{\cdot})$  of measures $(\Omega, \ce, \mu)$.
+\end{itemize}
+The interesting cases will be where $\cf$ is infinite dimensional.
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Duality in Arbitrary Reproducing Kernel Hilbert Spaces}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{theorem} Suppose that $K: \Omega \times \Omega \to \reals$ a strictly positive definite function.  Then the following are true:
+\begin{enumerate}
+\renewcommand{\labelenumi}{\roman{enumi})}
+
+    \item There exists a unique reproducing kernel Hilbert space, $\bigl(\cf,\ip[\cf]{\cdot}{\cdot}\bigr)$ of functions defined on $\Omega$ with reproducing kernel $K$.
+    
+    \item There exists a unique Hilbert space, $\bigl(\cm,\ip[\cm]{\cdot}{\cdot}\bigr)$, of measures defined on $\Omega$ with $\sigma$-algebra $\ce$, where $\ce$ contains all sets consisting of a single element of $\Omega$, and with
+    \begin{equation} \label{eq:Mipdef}
+    \ip[\cm]{\mu}{\nu} := \int_{\Omega \times \Omega} K(t,x) \, (\mu \times \nu) (\dif t \times \dif x).
+    \end{equation}
+    Uniqueness means that if $\bigl(\cm',\ip[\cm]{\cdot}{\cdot}\bigr)$ is Hilbert space of measures with the identical inner product, then $\cm \setminus \cm' = \emptyset$ and for all $\lambda \in \cm' \setminus \cm$, there exists a $\mu \in \cm$ such that $\norm[\cm]{\lambda - \mu} = 0$.
+    
+    
+    \item \label{thmiii} There exists a \emph{one-to-one and onto, isometric(?) mapping} $T : \cm \to \cf$ defined as 
+    \begin{subequations}
+\begin{gather}
+    T(\mu)(x) := \ip[\cf \times \cm]{K(\cdot, x)}{\mu} = \int_\Omega K(t, x) \, \mu(\dif t) \qquad \forall x \in \Omega, \mu \in \cm, \\
+    \intertext{where $ \ip[\cf \times \cm]{\cdot}{\cdot} : \cf \times \cm \to \reals$ is a real, bilinear function defined by} 
+    \ip[\cf \times \cm]{f}{\mu} := \int_\Omega f(x) \, \mu(\dif x) \qquad \forall f \in \cf, \ \  \mu \in \cm.
+\end{gather}
+\end{subequations}
+
+
+
+\item For any $\mu, \nu \in \cm$,
+\begin{equation}
+    \ip[\cm]{\mu}{\nu} = \ip[\cf \times \cm]{T(\mu)}{\nu} = \int_\Omega T(\mu)(x) \, \nu(\dif x) = \ip[\cf]{T(\mu)}{T(\nu)},
+\end{equation}
+which 
+\end{enumerate}
+
+\end{theorem}
+
+Interpretation of this theorem.
+\begin{itemize}
+    \item iii) means that the measures act as the coefficients determining the functions using the basis given by the reproducing kernel.
+    \item iv) implies that the inner product of two functions is equal to the appropriate inner produce of their coefficients.  
+    \item Since the Riesz Representation Theorem implies that all linear functionals on Hilbert spaces may be represented as inner products of with a representer, iv) imples that they can also be represented as integrals with respect to a particular measure.
+\end{itemize}
+
+\begin{proof}
+Needed.
+
+
+i) is known
+
+ii) is kind of in \cite{Hic99a}
+
+iii) and iv) I have not seen
+\end{proof}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Open Questions}
+What does this give us?
+
+I may have some ideas
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 
 
