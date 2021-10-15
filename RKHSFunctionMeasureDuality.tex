@@ -1,5 +1,5 @@
 \documentclass[reqno]{amsart}
-\usepackage{mathtools,upref,siunitx,upquote,fancyvrb,color}
+\usepackage{mathtools,upref,siunitx,upquote,fancyvrb,xspace,color}
 \usepackage{cleveref}
 \usepackage[hyphens]{url}
 \usepackage[utf8]{inputenc}
@@ -16,6 +16,9 @@
 \algnewcommand\RETURN{\State \textbf{Return }}
 
 \DeclareMathOperator{\distdens}{\overset{\text{PDF}}{\sim}}
+
+
+\newcommand{\FredNote}[1]{{\color{blue}Fred: #1}}
 
 \textwidth 6.5in
 \hoffset -0.7in
@@ -41,7 +44,7 @@
 
 Let $(\reals^d,\ip[\cf]{\cdot}{\cdot})$ be the Hilbert space defined by the inner product 
 \begin{equation*}
-    \ip[\cf]{\vf}{\vg} := \vf^T \mA \vg \qquad \forall \vf, \vg \in \reals^d.
+    \ip[\cf]{\vf}{\vg} := \vf^T \mA \vg \qquad \forall \vf, \vg \in \reals^d,
 \end{equation*}
 where $\mA$ is a symmetric, strictly positive definite matrix.  Let $\mK :=  \mA^{-1}$.  We also define a Hilbert space $(\reals^d,\ip[\cm]{\cdot}{\cdot})$ by the inner product
 \begin{equation*}
@@ -57,11 +60,53 @@ such that
 \end{equation*}
 
 
-If $\vK_1, \ldots, \vK_d$ denote the columns of $\mK$, then there is a \emph{reproducing property}:
+If $\vK_1, \ldots, \vK_d$ denotes the columns of $\mK$, then there is a \emph{reproducing property}:
 \begin{equation*}
     \ip[\cf]{\vK_x}{\vf} = \vK_x \mA \vf = \ve_x^T \vf = f_x \qquad \forall \vf \in \reals^d, \ x \in \{1, \ldots, d\},
 \end{equation*}
 where $\ve_x := (0, \ldots, 0,\underbrace{1}_{x^{\text{th}} \text{ position}}, 0 \ldots, 0)^T$ and $\vf = (f_1, \ldots, f_d)^T$.  In other words, $ \ip[\cf]{\vK_x}{\vf}$ reproduces the $x^{\text{th}}$ element of $f$.
+
+\FredNote{Best approximation of vector and linear function }
+Let $\vf$ be some element of $\reals^d$ that we would like to approximate, but we only have partial information, $\vf_\fu = \bigl( f_t \bigr)_{t \in \fu}$, where $\emptyset \subset \fu \subset \{1, \ldots, d\}$.  Rewrite the matrices $\mK$ and $\mA$ in block form, by re-ordering the rows:
+\begin{gather*}
+\mA = \begin{pmatrix}
+\mA_{\fu \fu} = \bigl(K_{t,x} \bigr)_{t,x \in \fu} & 
+\mA_{\fu \overline{\fu}} = \mA_{\overline{\fu} \fu}^T \\
+\mA_{\overline{\fu} \fu} = \bigl(K_{t,x} \bigr)_{t \in \overline{\fu},x \in \fu} &
+\mA_{\overline{\fu} \overline{\fu}} = \bigl(K_{t,x} \bigr)_{t \in \overline{\fu},x \in \overline{\fu}}
+\end{pmatrix} \\
+\mK = \begin{pmatrix}
+\mK_{\fu \fu} = \bigl(K_{t,x} \bigr)_{t,x \in \fu} & 
+\mK_{\fu \overline{\fu}} = \mK_{\overline{\fu} \fu}^T \\
+\mK_{\overline{\fu} \fu} = \bigl(K_{t,x} \bigr)_{t \in \overline{\fu},x \in \fu} &
+\mK_{\overline{\fu} \overline{\fu}} = \bigl(K_{t,x} \bigr)_{t \in \overline{\fu},x \in \overline{\fu}}
+\end{pmatrix} = 
+\begin{pmatrix} \mK_\fu = \begin{pmatrix}
+\mK_{\fu \fu} \\ \mK_{\overline{\fu} \fu} 
+\end{pmatrix} & \mK_{\overline{\fu}} = \begin{pmatrix}
+\mK_{\fu \overline{\fu}} \\ \mK_{\overline{\fu} \overline{\fu}}
+\end{pmatrix} \end{pmatrix}
+\end{gather*}
+Define the approximation by
+\begin{gather*}
+    \tvf = \begin{pmatrix} f_\fu \\ f_{\overline{\fu}} \end{pmatrix}
+    = \mK_\fu \mK^{-1}_{\fu\fu} \vf_\fu 
+    = 
+    \begin{pmatrix} \mI \\ \mK_{\overline{\fu} \fu } \mK_{\fu\fu}^{-1} \end{pmatrix} 
+    \vf_\fu , \\
+    \text{where } 
+    \mK_\fu = \bigl(\vK_x\bigr)_{x \in \fu} 
+    = \begin{pmatrix} \mK_{\fu \fu} \\ \mK_{\overline{\fu} \fu} \end{pmatrix} , 
+    \ \ \mK_{\fu\fu} = \bigl(K_{t,x} \bigr)_{t,x \in \fu}, \ \ 
+    \mK_{\overline{\fu} \fu} = \bigl(K_{t,x} \bigr)_{t \in \overline{\fu},x \in \fu}
+\end{gather*}
+This approximation interpolates the known function values.  interpolation means that $\tvf_\fu = \vf_\fu$
+
+
+
+So we want to estimate $\vf_{\overline{\fu}} = \bigl( f_i \bigr)_{i \notin \fu}$. We do so by requiring 
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Functions and Measures}
