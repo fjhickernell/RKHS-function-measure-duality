@@ -42,6 +42,10 @@
 \subsection{Vectors and Matrices}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{The Spaces and Inner Products}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 Let $(\reals^d,\ip[\cf]{\cdot}{\cdot})$ be the Hilbert space defined by the inner product 
 \begin{equation*}
     \ip[\cf]{\vf}{\vg} := \vf^T \mA \vg \qquad \forall \vf, \vg \in \reals^d,
@@ -59,14 +63,22 @@ such that
     \ip[\cf]{\vT(\mu)}{\vT(\vnu)} = \bigl(\vT(\mu)\bigr)^T \mA \bigl(\vT(\nu)\bigr) = \vmu^T \mK \mA \mK \vnu = \vmu^T \mK \vnu = \ip[\cm]{\vmu}{\vnu} \qquad \forall \vmu, \vnu \in \reals^d.
 \end{equation*}
 
-
-If $\vK_1, \ldots, \vK_d$ denotes the columns of $\mK$, then there is a \emph{reproducing property}:
+There is a \emph{reproducing property}.  If $\vK_1, \ldots, \vK_d$ denotes the columns of $\mK$, then
 \begin{equation*}
     \ip[\cf]{\vK_x}{\vf} = \vK_x \mA \vf = \ve_x^T \vf = f_x \qquad \forall \vf \in \reals^d, \ x \in \{1, \ldots, d\},
 \end{equation*}
 where $\ve_x := (0, \ldots, 0,\underbrace{1}_{x^{\text{th}} \text{ position}}, 0 \ldots, 0)^T$ and $\vf = (f_1, \ldots, f_d)^T$.  In other words, $ \ip[\cf]{\vK_x}{\vf}$ reproduces the $x^{\text{th}}$ element of $f$.
 
-\FredNote{Best approximation of vector and linear function }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Linear Functionals and Transformations}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Approximations Based on Sampling}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 Let $\vf$ be some element of $\reals^d$ that we would like to approximate, but we only have partial information, $\vf_\fu = \bigl( f_t \bigr)_{t \in \fu}$, where $\emptyset \subset \fu \subset \{1, \ldots, d\}$.  Rewrite the matrices $\mK$ and $\mA$ in block form, by re-ordering the rows:
 \begin{gather*}
 \mA = \begin{pmatrix}
@@ -95,10 +107,18 @@ Define the following approximation, which  by interpolates the known function va
     \begin{pmatrix} \mI \\ \mK_{\overline{\fu} \fu } \mK_{\fu\fu}^{-1} \end{pmatrix} 
     \vf_\fu.
 \end{equation*}
+
 Note that the error of the approximation is orthogonal to the approximation because \begin{equation*}
     \ip[\cf]{\tvf}{\vf - \tvf} = \vf_\fu^T \mK^{-1}_{\fu\fu}  \mK_\fu^T \mA \begin{pmatrix} \vzero \\ \vf_{\overline{\fu}} - \mK_{\overline{\fu} \fu } \mK_{\fu\fu}^{-1} \vf_\fu \end{pmatrix} =  \vf_\fu^T \mK^{-1}_{\fu\fu}  \begin{pmatrix} \mI & \mzero \end{pmatrix} \begin{pmatrix} \vzero \\ \vf_{\overline{\fu}} - \mK_{\overline{\fu} \fu } \mK_{\fu\fu}^{-1} \vf_\fu \end{pmatrix}  
     = \vf_\fu^T \mK^{-1}_{\fu\fu} \vzero = 0.
 \end{equation*}
+This means that the norm of function being approximated may be expressed as
+\begin{equation*}
+    \norm[\cf]{\vf}^2 = \bignorm[\cf]{\tvf}^2 + \bignorm[\cf]{\vf - \tvf}^2.
+\end{equation*}
+Any other interpolant of $\vf$, say $\vg$, must satisfy $\norm[\cf]{\vg}^2 = \bignorm[\cf]{\tvg}^2 + \bignorm[\cf]{\vg - \tvf}^2$ by the same argument as above.  Thus, our approximation is the minimum norm interpolant.
+
+\FredNote{Best approximation of linear function }
 
 
 
