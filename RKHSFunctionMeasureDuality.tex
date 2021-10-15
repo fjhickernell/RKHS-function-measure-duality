@@ -87,24 +87,18 @@ Let $\vf$ be some element of $\reals^d$ that we would like to approximate, but w
 \mK_{\fu \overline{\fu}} \\ \mK_{\overline{\fu} \overline{\fu}}
 \end{pmatrix} \end{pmatrix}
 \end{gather*}
-Define the approximation by
-\begin{gather*}
+Define the following approximation, which  by interpolates the known function values:
+\begin{equation*}
     \tvf = \begin{pmatrix} f_\fu \\ f_{\overline{\fu}} \end{pmatrix}
     = \mK_\fu \mK^{-1}_{\fu\fu} \vf_\fu 
     = 
     \begin{pmatrix} \mI \\ \mK_{\overline{\fu} \fu } \mK_{\fu\fu}^{-1} \end{pmatrix} 
-    \vf_\fu , \\
-    \text{where } 
-    \mK_\fu = \bigl(\vK_x\bigr)_{x \in \fu} 
-    = \begin{pmatrix} \mK_{\fu \fu} \\ \mK_{\overline{\fu} \fu} \end{pmatrix} , 
-    \ \ \mK_{\fu\fu} = \bigl(K_{t,x} \bigr)_{t,x \in \fu}, \ \ 
-    \mK_{\overline{\fu} \fu} = \bigl(K_{t,x} \bigr)_{t \in \overline{\fu},x \in \fu}
-\end{gather*}
-This approximation interpolates the known function values.  interpolation means that $\tvf_\fu = \vf_\fu$
-
-
-
-So we want to estimate $\vf_{\overline{\fu}} = \bigl( f_i \bigr)_{i \notin \fu}$. We do so by requiring 
+    \vf_\fu.
+\end{equation*}
+Note that the error of the approximation is orthogonal to the approximation because \begin{equation*}
+    \ip[\cf]{\tvf}{\vf - \tvf} = \vf_\fu^T \mK^{-1}_{\fu\fu}  \mK_\fu^T \mA \begin{pmatrix} \vzero \\ \vf_{\overline{\fu}} - \mK_{\overline{\fu} \fu } \mK_{\fu\fu}^{-1} \vf_\fu \end{pmatrix} =  \vf_\fu^T \mK^{-1}_{\fu\fu}  \begin{pmatrix} \mI & \mzero \end{pmatrix} \begin{pmatrix} \vzero \\ \vf_{\overline{\fu}} - \mK_{\overline{\fu} \fu } \mK_{\fu\fu}^{-1} \vf_\fu \end{pmatrix}  
+    = \vf_\fu^T \mK^{-1}_{\fu\fu} \vzero = 0.
+\end{equation*}
 
 
 
