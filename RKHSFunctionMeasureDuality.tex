@@ -17,7 +17,7 @@
 
 \DeclareMathOperator{\distdens}{\overset{\text{PDF}}{\sim}}
 
-
+\newcommand{\AGSNote}[1]{{\color{cyan} #1}}
 \newcommand{\FredNote}[1]{{\color{blue}Fred: #1}}
 
 \textwidth 6.5in
@@ -65,14 +65,14 @@ such that
 
 There is a \emph{reproducing property}.  If $\vK_1, \ldots, \vK_d$ denotes the columns of $\mK$, then
 \begin{equation*}
-    \ip[\cf]{\vK_x}{\vf} = \vK_x \mA \vf = \ve_x^T \vf = f_x \qquad \forall \vf \in \reals^d, \ x \in \{1, \ldots, d\},
+    \ip[\cf]{\vK_x}{\vf} = \vK_x\AGSNote{^T} \mA \vf = \ve_x^T \vf = f_x \qquad \forall \vf \in \reals^d, \ x \in \{1, \ldots, d\},
 \end{equation*}
 where $\ve_x := (0, \ldots, 0,\underbrace{1}_{x^{\text{th}} \text{ position}}, 0 \ldots, 0)^T$ and $\vf = (f_1, \ldots, f_d)^T$.  In other words, $ \ip[\cf]{\vK_x}{\vf}$ reproduces the $x^{\text{th}}$ element of $f$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Linear Functionals and Transformations}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\FredNote{start with functionals.  Transformations can be bounded or unbounded.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Approximations Based on Sampling}
@@ -125,7 +125,7 @@ Any other interpolant of $\vf$, say $\vg$, must satisfy $\norm[\cf]{\vg}^2 = \bi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Functions and Measures}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Let's now rewrite these ideas in terms of functions and measures.  Let $\Omega = \{1, \ldots, d\}$, and let $\ce = 2^\Omega$.  Define a vector space of functions with it's inner produce:
+Let's now rewrite these ideas in terms of functions and measures.  Let $\Omega = \{1, \ldots, d\}$, and let $\ce = 2^\Omega$.  Define a vector space of functions with it's inner \AGSNote{product}:
 \begin{equation*}
     \cf : = \{f : \Omega \to \reals\}, \qquad \ip[\cf]{f}{g} := \sum_{t,x=1}^d f(t) A(t,x) g(x),
 \end{equation*}
