@@ -86,15 +86,19 @@ Please interrupt and ask questions}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}{What to Do with Reproducing Kernels}
+\begin{frame}[allowframebreaks]{Known Facts and Speculations Regarding Reproducing Kernels}
 
 \vspace{-5ex}
 	\begin{itemize}
-		\item Uniquely identified Hilbert spaces of functions, $\cf$, for which function evaluation at any point $\vx$ is a bounded functional
-		\item Use the Reisz Representation Theorem to derive error bounds for algorithms for linear problems, such as integration, function approximation, and solving linear differential equations%
-		\item Derive optimal algorithms by optimizing the weights and the data sites%
-		\item Determine how fast the error bounds decay to zero, and even whether convergence depends significantly on the number of variables
+		\item For a \alert{Hilbert space}, $(\cf,\ip{\cdot}{\cdot})$, of real-valued functions defined on $\Omega$ for which function evaluation at any point $\vx \in \Omega$ is a bounded functional, uniquely define the \alert{reproducing kernel}  $K: \Omega \times \Omega \to \reals$
+		\item \alert{Reisz Representation Theorem} leads to error bounds for algorithms for linear problems, such as integration, function approximation, and solving linear differential equations%
+		\item Optimal algorithms can be found by optimizing the weights (easy) and the data sites (hard)%
+		\item Determine how fast the error bounds for any linear algorithms decay to zero, and even whether convergence depends significantly on the number of variables
 		\item Derive a parallel analysis using Gaussian processes where the reproducing kernel is interpreted as a covariance kernel
+		
+		\item Define a Hilbert space of (distribution) measures, uniquely determined by $K$
+		
+		\item Define the (distribution) measure $\omega$ on $\Omega \times \Omega$, which corresponds to the ``inverse'' of the reproducing kernel, $K$
 	\end{itemize}	
 
 \end{frame}
@@ -109,7 +113,7 @@ Please interrupt and ask questions}
 		K(\mX,\mX) = \bigl(K(\vx_i,\vx_j)\bigr)_{i,j = 1}^n \text{ is \alert{positive definite} for any $n \times d$ $\mX$ with distinct rows lying in $\Omega$}
 	\end{gather*}
 	
-	$\cf$ is the completion of the pre-Hilbert space, $\cf_0 := \{c_1 K(\cdot,\vx_1) + \cdots + c_nK(\cdot, \vx_n) : n \in \naturals, \vc \in \reals^n\}$; any $K$ satisfying the above implies $\cf$
+	$\cf$ is the completion of the pre-Hilbert space, $\cf_0 := \spann\{K(\cdot,\vx) : \vx \in \Omega \}$; any $K$ satisfying the above defines $\cf$
 	
 	Reproducing kernels are \alert{unique}. If $\eta_\vx \in \cf$ is the representer for function evaluation at  $\vx \in \Omega$, then 
 	\[
@@ -117,6 +121,34 @@ Please interrupt and ask questions}
 	\]
 	
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Functions on $1\!:\!d$}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[label = RKRd]{Reproducing Kernels for Functions on $\{1, \ldots, d\}$, aka Vectors}
+	
+	\vspace{-3ex}
+	Let $\cf:=$ all functions on $\Omega := \{1, \ldots, d\} \text{ ``$=$'' } \reals^d$
+	
+	Pick a symmetric, positive definite (positive eigenvalues) matrix $\mW \in \reals^{d \times d}$ to define an inner product \vspace{-0.3ex}
+	\[
+	\ip{f}{h} : = \vf^T \mW \vh, \quad \forall f, h \in \cf, \qquad \text{where } \vf = \bigl(f(t) \bigr)_{t=1}^d
+	\]
+	\alert{Reproducing kernel}, $K$, is defined by 
+			$\bigl ( K(t,x) \bigr)_{t,x=1}^d = \mK := \mW^{-1}$, and has the properties
+		\vspace{-0.5ex}
+		\begin{gather*}
+			\alert{\text{Symmetry }} K(t,x) = K(x,t) \text{ because $\mW$ is symmetric and thus so is $\mK$} \\
+			\alert{\text{Positive Definiteness }} \bigl(  K(x_i,x_j)\bigr)_{i,j = 1}^n \text{ is positive definite for any distinct } x_1, \ldots, x_n \in \{1, \ldots, d\}\\
+			\alert{\text{Belonging }} K(\cdot,x) = \text{$x^{\text{th}}$ column of $\mK$} =: \vK_x \in \cf\\
+			\alert{\text{Reproduction }} \ip{K(\cdot,x)}{f} = \vK_x^T \mW \vf = \ve_x \vf = f(x) \quad \text{since } \mK := \mW^{-1};  \qquad 
+				\ve_x := (0, \ldots, 0, \underbrace{1}_{x^{\text{th}} \text{ position}}, 0, \ldots )^T
+		\end{gather*}
+\end{frame}
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
