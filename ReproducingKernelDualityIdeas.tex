@@ -134,7 +134,7 @@ Please interrupt and ask questions}
 	
 	Pick a symmetric, positive definite (positive eigenvalues) matrix $\mW \in \reals^{d \times d}$ to define an inner product \vspace{-0.3ex}
 	\[
-	\ip{f}{h} : = \vf^T \mW \vh, \quad \forall f, h \in \cf, \qquad \text{where } \vf = \bigl(f(t) \bigr)_{t=1}^d
+	\ip[\cf]{f}{h} : = \vf^T \mW \vh, \quad \forall f, h \in \cf, \qquad \text{where } \vf = \bigl(f(t) \bigr)_{t=1}^d
 	\]
 	\alert{Reproducing kernel}, $K$, is defined by 
 			$\bigl ( K(t,x) \bigr)_{t,x=1}^d = \mK := \mW^{-1}$, and has the properties
@@ -143,9 +143,42 @@ Please interrupt and ask questions}
 			\alert{\text{Symmetry }} K(t,x) = K(x,t) \text{ because $\mW$ is symmetric and thus so is $\mK$} \\
 			\alert{\text{Positive Definiteness }} \bigl(  K(x_i,x_j)\bigr)_{i,j = 1}^n \text{ is positive definite for any distinct } x_1, \ldots, x_n \in \{1, \ldots, d\}\\
 			\alert{\text{Belonging }} K(\cdot,x) = \text{$x^{\text{th}}$ column of $\mK$} =: \vK_x \in \cf\\
-			\alert{\text{Reproduction }} \ip{K(\cdot,x)}{f} = \vK_x^T \mW \vf = \ve_x \vf = f(x) \quad \text{since } \mK := \mW^{-1};  \qquad 
+			\alert{\text{Reproduction }} \ip[\cf]{K(\cdot,x)}{f} = \vK_x^T \mW \vf = \ve_x \vf = f(x) \quad \text{since } \mK := \mW^{-1};  \qquad 
 				\ve_x := (0, \ldots, 0, \underbrace{1}_{x^{\text{th}} \text{ position}}, 0, \ldots )^T
 		\end{gather*}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Measures for Functions on $\{1, \ldots, d\}$}
+	
+	\vspace{-3ex}
+	Let $\cm:=$ all signed measures on $\Omega := \{1, \ldots, d\} \text{ ``$=$'' } \reals^d$
+
+ The Dirac measure, $\delta_x\in \cm$ corresponds to $\ve_x$, i.e., 
+ \[
+f(x) = \int_\Omega f(t) \, \delta_x(\dif t) = \ve_x^T \vf
+ \]
+ Any $\lambda = \lambda_1 \delta_1 + \cdots + \lambda_2 \delta_d \in \cm$ corresponds to $\vlambda = (\lambda_1, \ldots, \lambda_d) \in \reals^d$ such that 
+\[
+\int_\Omega f(t) \, \lambda(\dif t) = \vlambda^T \vf
+\]
+$\cm$ has an inner product defined as
+\[
+\ip[\cm]{\lambda}{\mu} := \int_{\Omega \times \Omega}K(t,x) \, \lambda(\dif t) \mu( \dif x) = \vlambda^T\mK\vmu
+\]
+There is a one-to-one map from $\cm$ to $\cf$ given by 
+\[
+f_\lambda(x) = \int_\Omega K(\vt,\vx) \, \lambda(\dif t)  \qquad \text{or} \qquad \vf_\lambda = \mK \vlambda
+\]
+For functions defined by this map
+\[
+\ip[\cf]{f_\lambda}{g_\mu} = \vf_\lambda^T \mW \vg_\mu \underbrace{=}_{\mK^T = \mK} \vlambda^T \mK \mW \mK \vmu \underbrace{=}_{\mK = \mW^{-1}} \vlambda^T \mK \vmu = \ip[\cm]{\lambda}{\mu}
+\]
+
+\end{frame}
+
+
+\begin{frame}{Bounds on Linear Functionals}
+
 \end{frame}
 
 
