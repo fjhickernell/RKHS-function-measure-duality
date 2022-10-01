@@ -151,17 +151,17 @@ Please interrupt and ask questions}
 \begin{frame}[allowframebreaks]{Measures for Functions on $\{1, \ldots, d\}$}
 	
 	\vspace{-3ex}
-	Let $\cm:=$ all signed measures on $\Omega := \{1, \ldots, d\} \text{ ``$=$'' } \reals^d$
+	Let $\cm:=$ all signed measures on $\Omega := \{1, \ldots, d\} \text{ ``$=$'' } \reals^d$, where the $\sigma$-algebra is $\ce = 2^\Omega$
 
- The Dirac measure, $\delta_x\in \cm$ corresponds to $\ve_x$, i.e., 
+ The Dirac measure, $\delta_x\in \cm$ integrated against $f \in \cf$ corresponds to multiplication by $\ve_x$, i.e., 
  \[
 f(x) = \int_\Omega f(t) \, \delta_x(\dif t) = \ve_x^T \vf
  \]
- Any $\lambda = \lambda_1 \delta_1 + \cdots + \lambda_2 \delta_d \in \cm$ corresponds to $\vlambda = (\lambda_1, \ldots, \lambda_d) \in \reals^d$ such that 
+ Any $\lambda \in \cm$ may be expressed as $\lambda = \lambda_1 \delta_1 + \cdots + \lambda_2 \delta_d $, where $\lambda_x = \lambda(\{x\})$, and integration against $\lambda$ is
 \[
-\int_\Omega f(t) \, \lambda(\dif t) = \vlambda^T \vf
+\int_\Omega f(t) \, \lambda(\dif t) = \vlambda^T \vf, \qquad \vlambda = (\lambda_1, \ldots, \lambda_d) \in \reals^d
 \]
-$\cm$ has an inner product defined as
+$\cm$ has an inner product defined by
 \[
 \ip[\cm]{\lambda}{\mu} := \int_{\Omega \times \Omega}K(t,x) \, \lambda(\dif t) \mu( \dif x) = \vlambda^T\mK\vmu
 \]
@@ -171,7 +171,7 @@ f_\lambda(x) = \int_\Omega K(\vt,\vx) \, \lambda(\dif t)  \qquad \text{or} \qqua
 \]
 For functions defined by this map
 \[
-\ip[\cf]{f_\lambda}{g_\mu} = \vf_\lambda^T \mW \vg_\mu \underbrace{=}_{\mK^T = \mK} \vlambda^T \mK \mW \mK \vmu \underbrace{=}_{\mK = \mW^{-1}} \vlambda^T \mK \vmu = \ip[\cm]{\lambda}{\mu}
+\ip[\cf]{f_\lambda}{f_\mu} = \vf_\lambda^T \mW \vf_\mu \underbrace{=}_{\mK^T = \mK} \vlambda^T \mK \mW \mK \vmu \underbrace{=}_{\mK = \mW^{-1}} \vlambda^T \mK \vmu = \ip[\cm]{\lambda}{\mu}
 \]
 
 \end{frame}
