@@ -167,7 +167,7 @@ $\cm$ has an inner product defined by
 \]
 There is a one-to-one map from $\cm$ to $\cf$ given by 
 \[
-f_\lambda(x) = \int_\Omega K(\vt,\vx) \, \lambda(\dif t)  \qquad \text{or} \qquad \vf_\lambda = \mK \vlambda
+f_\lambda(x) = \int_\Omega K(t,x) \, \lambda(\dif t)  \qquad \text{or} \qquad \vf_\lambda = \mK \vlambda
 \]
 For functions defined by this map
 \[
@@ -177,8 +177,15 @@ For functions defined by this map
 \end{frame}
 
 
-\begin{frame}{Bounds on Linear Functionals}
-
+\begin{frame}{Linear Functionals}
+	Linear functionals on $\cf$ may be represented as
+	\[
+	L(f) =  \vlambda_L^T \vf  = 
+	\begin{cases} \ip[\cf]{g_L}{f} = \vg_L^T \mW \vf, & g_L\in \cf   \text{ is the \alert{representer} of } L, \;  
+		g_L(x) = L(K(\cdot,x)) \\
+		\ip[\cm \times \cf]{\lambda_L}{f} : = \int_\Omega f(x) \, \lambda_L(\dif x), & \vlambda_L = \mW \vg_L
+	\end{cases}
+\]
 \end{frame}
 
 
