@@ -124,42 +124,42 @@ Please interrupt and ask questions}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Functions on $1\!:\!d$}
+\section{Functions on $1\!:\!m$}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}[label = RKRd]{Reproducing Kernels for Functions on $\{1, \ldots, d\}$, aka Vectors}
+\begin{frame}[label = RKRm]{Reproducing Kernels for Functions on $\{1, \ldots, m\}$, aka Vectors}
 	
 	\vspace{-3ex}
-	Let $\cf:=$ all functions on $\Omega := \{1, \ldots, d\} \text{ ``$=$'' } \reals^d$
+	Let $\cf:=$ all functions on $\Omega := \{1, \ldots, m\} \text{ ``$=$'' } \reals^m$
 	
-	Pick a symmetric, positive definite (positive eigenvalues) matrix $\mW \in \reals^{d \times d}$ to define an inner product \vspace{-0.3ex}
+	Pick a symmetric, positive definite (positive eigenvalues) matrix $\mW \in \reals^{m \times m}$ to define an inner product \vspace{-0.3ex}
 	\[
-	\ip[\cf]{f}{h} : = \vf^T \mW \vh, \quad \forall f, h \in \cf, \qquad \text{where } \vf = \bigl(f(t) \bigr)_{t=1}^d
+	\ip[\cf]{f}{h} : = \vf^T \mW \vh, \quad \forall f, h \in \cf, \qquad \text{where } \vf = \bigl(f(t) \bigr)_{t=1}^m
 	\]
 	\alert{Reproducing kernel}, $K$, is defined by 
-			$\bigl ( K(t,x) \bigr)_{t,x=1}^d = \mK := \mW^{-1}$, and has the properties
+			$\bigl ( K(t,x) \bigr)_{t,x=1}^m = \mK := \mW^{-1}$, and has the properties
 		\vspace{-0.5ex}
 		\begin{gather*}
 			\alert{\text{Symmetry }} K(t,x) = K(x,t) \text{ because $\mW$ is symmetric and thus so is $\mK$} \\
-			\alert{\text{Positive Definiteness }} \bigl(  K(x_i,x_j)\bigr)_{i,j = 1}^n \text{ is positive definite for any distinct } x_1, \ldots, x_n \in \{1, \ldots, d\}\\
+			\alert{\text{Positive Definiteness }} \bigl(  K(x_i,x_j)\bigr)_{i,j = 1}^n \text{ is positive definite for any distinct } x_1, \ldots, x_n \in \{1, \ldots, m\}\\
 			\alert{\text{Belonging }} K(\cdot,x) = \text{$x^{\text{th}}$ column of $\mK$} =: \vK_x \in \cf\\
 			\alert{\text{Reproduction }} \ip[\cf]{K(\cdot,x)}{f} = \vK_x^T \mW \vf = \ve_x \vf = f(x) \quad \text{since } \mK := \mW^{-1};  \qquad 
 				\ve_x := (0, \ldots, 0, \underbrace{1}_{x^{\text{th}} \text{ position}}, 0, \ldots )^T
 		\end{gather*}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Measures for Functions on $\{1, \ldots, d\}$}
+\begin{frame}[allowframebreaks]{Measures for Functions on $\{1, \ldots, m\}$}
 	
 	\vspace{-3ex}
-	Let $\cm:=$ all signed measures on $\Omega := \{1, \ldots, d\} \text{ ``$=$'' } \reals^d$, where the $\sigma$-algebra is $\ce = 2^\Omega$
+	Let $\cm:=$ all signed measures on $\Omega := \{1, \ldots, m\} \text{ ``$=$'' } \reals^m$, where the $\sigma$-algebra is $\ce = 2^\Omega$
 
  The Dirac measure, $\delta_x\in \cm$ integrated against $f \in \cf$ corresponds to multiplication by $\ve_x$, i.e., 
  \[
 f(x) = \int_\Omega f(t) \, \delta_x(\dif t) = \ve_x^T \vf
  \]
- Any $\lambda \in \cm$ may be expressed as $\lambda = \lambda_1 \delta_1 + \cdots + \lambda_2 \delta_d $, where $\lambda_x = \lambda(\{x\})$, and integration against $\lambda$ is
+ Any $\lambda \in \cm$ may be expressed as $\lambda = \lambda_1 \delta_1 + \cdots + \lambda_2 \delta_m $, where $\lambda_x = \lambda(\{x\})$, and integration against $\lambda$ is
 \[
-\int_\Omega f(t) \, \lambda(\dif t) = \vlambda^T \vf, \qquad \vlambda = (\lambda_1, \ldots, \lambda_d) \in \reals^d
+\int_\Omega f(t) \, \lambda(\dif t) = \vlambda^T \vf, \qquad \vlambda = (\lambda_1, \ldots, \lambda_m) \in \reals^m
 \]
 $\cm$ has an inner product defined by
 \[
@@ -193,9 +193,39 @@ For functions defined by this map
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Kernel Ex}
+\section{Functions on Kernel $\Omega$}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}{Theorems We Need}
+
+\vspace{-13ex}
+Common assumptions:
+
+\vspace{-3ex}
+
+\begin{itemize}
+    \item $\cf_0$ and $\cm_0$ are any sets; let $\cf_1 = \spann(\cf_0)$ and $\cm_1 = \spann(\cm_0)$
+
+    \item Let $\ip[\cf_1 \times \cf_1]{\cdot}{\cdot}: \cf_1 \times \cf_1 \to \reals$ and $\ip[\cm_1 \times \cm_1]{\cdot}{\cdot}: \cm_1 \times \cm_1 \to \reals$ be inner products
+    
+    \item Let $\ip[\cm_1 \times \cf_1]{\cdot}{\cdot}: \cm_1 \times \cf_1 \to \reals$ be bilinear
+
+    \item  Let $\cf$ be the completion of $\cf_1$ under $\norm[\cf_1]{\cdot}= \sqrt{\ip[\cf_1 \times \cf_1]{\cdot}{\cdot}}$
+    
+    \item Let $\cm$ be the completion of $\cm_1$ under $\norm[\cm_1]{\cdot}= \sqrt{\ip[\cm_1 \times \cm_1]{\cdot}{\cdot}}$
+\end{itemize} 
+
+\begin{theorem} 
+Then
+% \begin{itemize}
+%     \item $\ip{\cdot}{\cdot}$ is bilinear for $\cm_1 \times \cf_1$.
+%     \item If $\norm[\cf_1]{\cdot} = \sqrt{\ip[\cf_1 \times \cf_1]{\cdot}{\cdot}}$, and $\cf$ is the completion of $\cf_1$ under $\norm[\cf_1]{\cdot}$
+% \end{itemize}
+\end{theorem}
+    
+\end{frame}
 
 \begin{frame}[label = RKRd]{Reproducing Kernels for Functions on $\{1, \ldots, d\}$, aka Vectors}
 	
