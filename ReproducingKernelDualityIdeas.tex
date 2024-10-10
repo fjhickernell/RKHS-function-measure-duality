@@ -113,7 +113,10 @@ Please interrupt and ask questions}
 		\draw[help lines] grid (15,7);
 		\node[nd, text width = {}] (Hnaught) at (7.5,0.25) {$\ch_0 = \spann\{ K(\cdot, x) : x \in \Omega\}$};
 		\uncover<2->{
-		\node[nd = lightyellow] (preH) at (2.5,2.25) {$(\ch_0, \langle \cdot,\cdot \rangle_{\ch_0})$ \\ $\Bigl \langle \sum_i a_i K(\cdot, x_i), \sum_j b_j K(\cdot,x_j) \Big \rangle_{\ch_0} := \sum_{i,j} a_i K(x_i,x_j) b_j$};
+		\node[nd = lightyellow] (preH) at (2.5,2.25) {$(\ch_0, \langle \cdot,\cdot \rangle_{\ch_0})$ \\ $\Bigl \langle \sum_i a_i K(\cdot, x_i), \sum_j b_j K(\cdot,x_j) \Big \rangle_{\ch_0} := 
+        \va^T \mK \vb, \ \mK = \Bigl( K(x_i,x_j) \Bigr)_{i,j=1}^n
+        %\sum_{i,j} a_i K(x_i,x_j) b_j
+        $};
         \draw[<-] (preH) -- (Hnaught.west);
 		
         \uncover<3->{
@@ -139,6 +142,15 @@ Please interrupt and ask questions}
 		\node[above = .5cm of preLtwo.north, nd = lightgreen] (H)
 		{$(\cf, \langle \cdot,\cdot \rangle_{L^2}) :=$  the completion of $(\ch_0, \langle \cdot,\cdot \rangle_{L^2})$ }
 		edge (preLtwo);
+
+        \uncover<8->{
+        \node[nd = lightgreen] (preG) at (12.5,2.25)
+        {$(\ch_0, \langle \cdot,\cdot \rangle_{\cg})$ \\ $\Bigl \langle \sum_i a_i K(\cdot, x_i), \sum_j b_j K(\cdot,x_j) \Big \rangle_{\cg} :=  \va^T \mK^{-1} \vb$} edge (Hnaught);
+        
+        
+        
+        
+        }
 
 
         
