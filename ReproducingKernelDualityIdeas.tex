@@ -113,50 +113,56 @@ Please interrupt and ask questions}
 		\draw[help lines] grid (15,7);
 		\node[nd, text width = {}] (Hnaught) at (7.5,0.25) {$\ch_0 = \spann\{ K(\cdot, x) : x \in \Omega\}$};
 		\uncover<2->{
-		\node[nd = lightyellow] (preH) at (2.5,2.25) {$(\ch_0, \langle \cdot,\cdot \rangle_{\ch_0})$ \\ $\Bigl \langle \sum_i a_i K(\cdot, x_i), \sum_j b_j K(\cdot,x_j) \Big \rangle_{\ch_0} := 
-        \va^T \mK \vb, \ \mK = \Bigl( K(x_i,x_j) \Bigr)_{i,j=1}^n
-        %\sum_{i,j} a_i K(x_i,x_j) b_j
+		\node[nd = lightyellow] (preH) at (2.5,1.75)
+		{$(\ch_0, \langle \cdot,\cdot \rangle_{\ch_0})$ \\
+			$\langle K(\cdot, t), K(\cdot,x) \rangle_{\ch_0} := K(t,x)
+		%$\Bigl \langle \sum_i a_i K(\cdot, x_i), \sum_j b_j K(\cdot,x_j) \Big \rangle_{\ch_0} :=  \va^T \mK \vb, \ \mK = \Bigl( K(x_i,x_j) \Bigr)_{i,j=1}^n
+		%\sum_{i,j} a_i K(x_i,x_j) b_j
         $};
         \draw[<-] (preH) -- (Hnaught.west);
-		
+
         \uncover<3->{
 		\node[above = .5cm of preH.north, nd = lightyellow] (H)
 		{$(\ch, \langle \cdot,\cdot \rangle_{\ch}) :=$  the completion of $(\ch_0, \langle \cdot,\cdot \rangle_{\ch_0})$ }
 		edge (preH);
-		
+
         \uncover<4->{
         \node[above = 5cm of Hnaught.north, nd = lightorange, text width = {}] (linear)
         {$\ch' := \{\text{bounded, linear}$ \\ $\text{functionals on } \ch \}$};
-					
-        \uncover<5->{ 
+
+        \uncover<5->{
         \node[above = .5cm of H.north, nd = lightyellow, text width = {}] (Riesz)
 		{Riesz: $\forall L \in \ch', \ \exists g \in \ch \ni$ \\
 		$L(f) = \langle g,f \rangle_{\ch} \ \forall f \in \ch$}
 		edge (H) edge (linear);
 
         \uncover<6->{
-        \node[above = 0.5 cm of Hnaught.north, nd = lightgreen] (preLtwo) 
-        {$(\ch_0, \langle \cdot,\cdot \rangle_{L^2})$ \\ $\Bigl \langle \sum_i a_i K(\cdot, x_i), \sum_j b_j K(\cdot,x_j) \Big \rangle_{L^2} := \sum_{i,j} a_i b_j \int_\Omega K(t,x_i) K(t,x_j) \, \varrho(t) \,\dif t$} edge (Hnaught);
-        
+        \node[above = 0.5 cm of Hnaught.north, nd = lightgreen] (preLtwo)
+        {$(\ch_0, \langle \cdot,\cdot \rangle_{L^2})$ \\
+        	$\langle f, g \rangle_{L^2} := \int_\Omega f(t) g(t) \, \varrho(t) \,\dif t$}
+%        	$\Bigl \langle \sum_i a_i K(\cdot, x_i), \sum_j b_j K(\cdot,x_j) \Big \rangle_{L^2} := \sum_{i,j} a_i b_j \int_\Omega K(t,x_i) K(t,x_j) \, \varrho(t) \,\dif t$}
+        	edge (Hnaught);
+
         \uncover<7->{
-		\node[above = .5cm of preLtwo.north, nd = lightgreen] (H)
+		\node[above = .5cm of preLtwo.north, nd = lightgreen] (F)
 		{$(\cf, \langle \cdot,\cdot \rangle_{L^2}) :=$  the completion of $(\ch_0, \langle \cdot,\cdot \rangle_{L^2})$ }
 		edge (preLtwo);
 
         \uncover<8->{
-        \node[nd = lightgreen] (preG) at (12.5,2.25)
-        {$(\ch_0, \langle \cdot,\cdot \rangle_{\cg})$ \\ $\Bigl \langle \sum_i a_i K(\cdot, x_i), \sum_j b_j K(\cdot,x_j) \Big \rangle_{\cg} :=  \va^T \mK^{-1} \vb$} edge (Hnaught);
-        
-        
-        
-        
+        \node[nd = lightgreen] (preG) at (12.5,2)
+        {$(\ch_0, \langle \cdot,\cdot \rangle_{\cg})$ \\ $\Bigl \langle \sum_i a_i K(\cdot, x_i), \sum_j b_j K(\cdot,x_j) \Big \rangle_{\cg} :=  \va^T \mK^{-1} \vb$};
+        \draw[<-] (preG) -- (Hnaught.east);
+
+
+
+
         }
 
 
-        
+
         }
-        
-        
+
+
         }
         }
 		}
