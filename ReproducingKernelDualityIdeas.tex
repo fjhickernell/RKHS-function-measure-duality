@@ -112,9 +112,10 @@ Please interrupt and ask questions}
 	\begin{tikzpicture}[every path/.style={<-, ultra thick}]
 		\draw[help lines] grid (15,7);
 		\node[nd, text width = {}] (Hnaught) at (7.5,0.25) {$\ch_0 = \spann\{ K(\cdot, x) : x \in \Omega\}$};
+
 		\uncover<2->{
-		\node[nd = lightyellow] (preH) at (2.5,1.75)
-		{$(\ch_0, \langle \cdot,\cdot \rangle_{\ch_0})$ \\
+		\node[nd = lightyellow] (preH) at (2.5,1.5)
+		{%$(\ch_0, \langle \cdot,\cdot \rangle_{\ch_0})$ \\
 			$\langle K(\cdot, t), K(\cdot,x) \rangle_{\ch_0} := K(t,x)
 		%$\Bigl \langle \sum_i a_i K(\cdot, x_i), \sum_j b_j K(\cdot,x_j) \Big \rangle_{\ch_0} :=  \va^T \mK \vb, \ \mK = \Bigl( K(x_i,x_j) \Bigr)_{i,j=1}^n
 		%\sum_{i,j} a_i K(x_i,x_j) b_j
@@ -131,14 +132,15 @@ Please interrupt and ask questions}
         {$\ch' := \{\text{bounded, linear}$ \\ $\text{functionals on } \ch \}$};
 
         \uncover<5->{
-        \node[above = .5cm of H.north, nd = lightyellow, text width = {}] (Riesz)
-		{Riesz: $\forall L \in \ch', \ \exists g \in \ch \ni$ \\
-		$L(f) = \langle g,f \rangle_{\ch} \ \forall f \in \ch$}
+        \node[above = .5cm of H.north, nd = lightyellow] (Riesz)
+		{Riesz and reproducing: \\ $\forall L \in \ch'$, let $\eta_L(x) : = L(K(\cdot,x))$\\
+			  Then
+		$L(f) = \langle \eta_L,f \rangle_{\ch} \ \forall f \in \ch$}
 		edge (H) edge (linear);
 
         \uncover<6->{
         \node[above = 0.5 cm of Hnaught.north, nd = lightgreen] (preLtwo)
-        {$(\ch_0, \langle \cdot,\cdot \rangle_{L^2})$ \\
+        {%$(\ch_0, \langle \cdot,\cdot \rangle_{L^2})$ \\
         $\langle f, g \rangle_{L^2} := \int_\Omega f(x) g(x) \, \varrho(x) \,\dif x$}
         %	$\langle K(\cdot, t), K(\cdot,x) \rangle_{L^2} := \int_\Omega K(y, t) K(y,x) \, \varrho(t) \,\dif y$}
 %        	$\Bigl \langle \sum_i a_i K(\cdot, x_i), \sum_j b_j K(\cdot,x_j) \Big \rangle_{L^2} := \sum_{i,j} a_i b_j \int_\Omega K(t,x_i) K(t,x_j) \, \varrho(t) \,\dif t$}
@@ -150,8 +152,10 @@ Please interrupt and ask questions}
 		edge (preLtwo);
 
         \uncover<8->{
-        \node[nd = lightgreen] (preG) at (12.5,2)
-        {$(\ch_0, \langle \cdot,\cdot \rangle_{\cg})$ \\ $\Bigl \langle \sum_i a_i K(\cdot, x_i), \sum_j b_j K(\cdot,x_j) \Big \rangle_{\cg} :=  \va^T \mK^{-1} \vb$};
+        \node[nd = lightgreen] (preG) at (12.5,1.6)
+        {%$(\ch_0, \langle \cdot,\cdot \rangle_{\cg})$ \\
+        	$\langle f, g \rangle_{\cg} := \int_{\Omega^2} f(t) K(t,x) g(x) \, \varrho(t) \varrho(x) \,\dif t \dif x$};
+        	%$\Bigl \langle \sum_i a_i K(\cdot, x_i), \sum_j b_j K(\cdot,x_j) \Big \rangle_{\cg} :=  \va^T \mK^{-1} \vb$};
         \draw[<-] (preG) -- (Hnaught.east);
 
 
