@@ -1,7 +1,7 @@
 
-%Talk given virtually to Mac Hyman and friends, November 15, 2021
+%Slide with ideas on reprocing kernel rigged Hilbert spaces
 \documentclass[10pt,compress,xcolor={usenames,dvipsnames},aspectratio=169]{beamer}
-%\documentclass[xcolor={usenames,dvipsnames},aspectratio=169]{beamer} %slides and 
+%\documentclass[xcolor={usenames,dvipsnames},aspectratio=169]{beamer} %slides and
 %notes
 \usepackage{amsmath,
 	amssymb,
@@ -25,7 +25,8 @@
 \usepackage[euler-digits,euler-hat-accent]{eulervm}
 \usepackage{media9}
 \usepackage[autolinebreaks]{mcode}
-\usepackage[tikz]{mdframed}
+\usepackage{tikz}
+%\usepackage[tikz]{mdframed}
 
 
 \usetheme{FJHSlimNoFoot169}
@@ -40,6 +41,7 @@
 \DeclareMathOperator{\INT}{INT}
 \DeclareMathOperator{\LIN}{LINEAR}
 \DeclareMathOperator{\BAD}{BAD}
+\DeclareMathOperator{\spann}{span}
 %\DeclareMathOperator{\opt}{opt}
 \newcommand{\dataN}{\bigl(\hf(\vk_i)\bigr)_{i=1}^n}
 \newcommand{\dataNj}{\bigl(\hf(\vk_i)\bigr)_{i=1}^{n_j}}
@@ -53,13 +55,13 @@
 \providecommand{\HickernellFJ}{H.\xspace}
 
 
-\renewcommand{\OffTitleLength}{-7ex}
+%\renewcommand{\OffTitleLength}{-7ex}
 \setlength{\FJHThankYouMessageOffset}{-8ex}
 \title{Reproducing Kernels, Function Spaces, Measures, Distributions}
 \author[]{Fred J. Hickernell and Aleksei Sorokin}
 \institute{Department of Applied Mathematics \qquad
 	Center for Interdisciplinary Scientific Computation \\
-	Office of Research \\  
+	Office of Research \\
 	Illinois Institute of Technology \qquad
 	\href{mailto:hickernell@iit.edu}{\url{hickernell@iit.edu}} \qquad
 	\href{http://mypages.iit.edu/~hickernell}{\url{mypages.iit.edu/~hickernell}}}
@@ -67,9 +69,27 @@
 \thanksnote{Thanks to those helping us clarify these ideas \\
 Slides available at \href{https://speakerdeck.com/fjhickernell/reproducing-kernel-tutorial}{\nolinkurl{speakerdeck.com/fjhickernell/reproducing-kernel-tutorial}} \\
 Please interrupt and ask questions}
-	
+
 %\event{Happy Fred}
 \date[]{ revised \today}
+
+
+\colorlet{lightblue}{blue!15}
+\colorlet{lightyellow}{yellow!20}
+\colorlet{lightorange}{orange!20}
+
+\usetikzlibrary{positioning}
+\tikzset{
+	help lines /.append style ={dashed},
+	nd/.style ={draw = none,
+		text width = 4.5cm,
+		font = \small,
+		align = flush center,
+		fill = #1,
+		rounded corners},
+	nd/.default = lightblue
+}
+
 
 \input FJHDef.tex
 
@@ -80,16 +100,38 @@ Please interrupt and ask questions}
 
 \frame{\titlepage}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Background}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}{Diagram}
+\begin{frame}[fragile]{Diagram}
+
+	\begin{tikzpicture}[every path/.style={<-, ultra thick}]
+		%\draw[help lines] grid (15,7);
+		\node[nd, text width = {}] (Hnaught) at (7.5,0.25) {$\ch_0 = \spann\{ K(\cdot, x) : x \in \Omega\}$};
+		\uncover<2->{
+			\node[nd = lightyellow] (preH) at (2.5,1.75) {$(\ch_0, \langle \cdot,\cdot \rangle_{\ch_0})$ \\ $\Bigl \langle \sum_i a_i K(\cdot, x_i), \sum_j b_j K(\cdot,x_j) \Big \rangle_{\ch_0} := \sum_{i,j} a_i K(x_i,x_j) b_j$} edge (Hnaught);
+			\uncover<3->{
+				\node[above = .5cm of preH.north, nd = lightyellow] (H)
+				{$(\ch, \langle \cdot,\cdot \rangle_{\ch}) :=$  the completion of $(\ch_0, \langle \cdot,\cdot \rangle_{\ch_0})$ }
+				edge (preH);
+				\uncover<4->{
+					\node[above = .5cm of H.north, nd = lightyellow] (Riesz)
+					{Riesz: $\forall L \in \ch' \ \exists g \in \ch \ni$ \\
+						$L(f) = \langle g,f \rangle_{\ch} \ \forall f \in \ch$}
+					edge (H);
+					}
+			}
+		}
+	\end{tikzpicture}
 
 
 \end{frame}
+
+\end{document}
 
 \begin{frame}[allowframebreaks]{Known Facts and Speculations Regarding Reproducing Kernels}
 
@@ -100,31 +142,31 @@ Please interrupt and ask questions}
 		\item Optimal algorithms can be found by optimizing the weights (easy) and the data sites (hard)%
 		\item Determine how fast the error bounds for any linear algorithms decay to zero, and even whether convergence depends significantly on the number of variables
 		\item Derive a parallel analysis using Gaussian processes where the reproducing kernel is interpreted as a covariance kernel
-		
+
 		\item Define a Hilbert space of (distribution) measures, uniquely determined by $K$
-		
+
 		\item Define the (distribution) measure $\omega$ on $\Omega \times \Omega$, which corresponds to the ``inverse'' of the reproducing kernel, $K$
-	\end{itemize}	
+	\end{itemize}
 
 \end{frame}
 
 \begin{frame}{Reproducing Kernels for Functions on General Domains  \cite{Aro50}}
-	
+
 	\vspace{-4ex}
-	Suppose that  $(\cf,\ip{\cdot}{\cdot})$  is a Hilbert space of functions on $\Omega$ for which \alert{function evaluation is bounded}.  Then there exists a \alert{unique reproducing kernel}  $K: \Omega \times \Omega \to \reals$ for which 
+	Suppose that  $(\cf,\ip{\cdot}{\cdot})$  is a Hilbert space of functions on $\Omega$ for which \alert{function evaluation is bounded}.  Then there exists a \alert{unique reproducing kernel}  $K: \Omega \times \Omega \to \reals$ for which
 	\vspace{-1ex}
 	\begin{gather*}
 		\underbrace{K(\vt,\vx) = K(\vx,\vt)}_{\alert{\text{symmetry}}},  \quad \underbrace{K(\cdot,\vx) \in \cf}_{\alert{\text{belonging}}}, \quad  \underbrace{f(\vx) = \ip{K(\cdot,\vx)}{f}}_{\alert{\text{reproduction}}}  \qquad \forall \vt, \vx \in \Omega, \; f \in \cf \\
 		K(\mX,\mX) = \bigl(K(\vx_i,\vx_j)\bigr)_{i,j = 1}^n \text{ is \alert{positive definite} for any $n \times d$ $\mX$ with distinct rows lying in $\Omega$}
 	\end{gather*}
-	
+
 	$\cf$ is the completion of the pre-Hilbert space, $\cf_0 := \spann\{K(\cdot,\vx) : \vx \in \Omega \}$; any $K$ satisfying the above defines $\cf$
-	
-	Reproducing kernels are \alert{unique}. If $\eta_\vx \in \cf$ is the representer for function evaluation at  $\vx \in \Omega$, then 
+
+	Reproducing kernels are \alert{unique}. If $\eta_\vx \in \cf$ is the representer for function evaluation at  $\vx \in \Omega$, then
 	\[
 	K(\vt,\vx) := \ip{\eta_\vt}{\eta_\vx} = \eta_\vt(\vx) = \eta_\vx(\vt)
 	\]
-	
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -133,32 +175,32 @@ Please interrupt and ask questions}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}[label = RKRm]{Reproducing Kernels for Functions on $\{1, \ldots, m\}$, aka Vectors}
-	
+
 	\vspace{-3ex}
 	Let $\cf:=$ all functions on $\Omega := \{1, \ldots, m\} \text{ ``$=$'' } \reals^m$
-	
+
 	Pick a symmetric, positive definite (positive eigenvalues) matrix $\mW \in \reals^{m \times m}$ to define an inner product \vspace{-0.3ex}
 	\[
 	\ip[\cf]{f}{h} : = \vf^T \mW \vh, \quad \forall f, h \in \cf, \qquad \text{where } \vf = \bigl(f(t) \bigr)_{t=1}^m
 	\]
-	\alert{Reproducing kernel}, $K$, is defined by 
+	\alert{Reproducing kernel}, $K$, is defined by
 			$\bigl ( K(t,x) \bigr)_{t,x=1}^m = \mK := \mW^{-1}$, and has the properties
 		\vspace{-0.5ex}
 		\begin{gather*}
 			\alert{\text{Symmetry }} K(t,x) = K(x,t) \text{ because $\mW$ is symmetric and thus so is $\mK$} \\
 			\alert{\text{Positive Definiteness }} \bigl(  K(x_i,x_j)\bigr)_{i,j = 1}^n \text{ is positive definite for any distinct } x_1, \ldots, x_n \in \{1, \ldots, m\}\\
 			\alert{\text{Belonging }} K(\cdot,x) = \text{$x^{\text{th}}$ column of $\mK$} =: \vK_x \in \cf\\
-			\alert{\text{Reproduction }} \ip[\cf]{K(\cdot,x)}{f} = \vK_x^T \mW \vf = \ve_x \vf = f(x) \quad \text{since } \mK := \mW^{-1};  \qquad 
+			\alert{\text{Reproduction }} \ip[\cf]{K(\cdot,x)}{f} = \vK_x^T \mW \vf = \ve_x \vf = f(x) \quad \text{since } \mK := \mW^{-1};  \qquad
 				\ve_x := (0, \ldots, 0, \underbrace{1}_{x^{\text{th}} \text{ position}}, 0, \ldots )^T
 		\end{gather*}
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Measures for Functions on $\{1, \ldots, m\}$}
-	
+
 	\vspace{-3ex}
 	Let $\cm:=$ all signed measures on $\Omega := \{1, \ldots, m\} \text{ ``$=$'' } \reals^m$, where the $\sigma$-algebra is $\ce = 2^\Omega$
 
- The Dirac measure, $\delta_x\in \cm$ integrated against $f \in \cf$ corresponds to multiplication by $\ve_x$, i.e., 
+ The Dirac measure, $\delta_x\in \cm$ integrated against $f \in \cf$ corresponds to multiplication by $\ve_x$, i.e.,
  \[
 f(x) = \int_\Omega f(t) \, \delta_x(\dif t) = \ve_x^T \vf
  \]
@@ -170,7 +212,7 @@ $\cm$ has an inner product defined by
 \[
 \ip[\cm]{\lambda}{\mu} := \int_{\Omega \times \Omega}K(t,x) \, \lambda(\dif t) \mu( \dif x) = \vlambda^T\mK\vmu
 \]
-There is a one-to-one map from $\cm$ to $\cf$ given by 
+There is a one-to-one map from $\cm$ to $\cf$ given by
 \[
 f_\lambda(x) = \int_\Omega K(t,x) \, \lambda(\dif t)  \qquad \text{or} \qquad \vf_\lambda = \mK \vlambda
 \]
@@ -185,8 +227,8 @@ For functions defined by this map
 \begin{frame}{Linear Functionals}
 	Linear functionals on $\cf$ may be represented as
 	\[
-	L(f) =  \vlambda_L^T \vf  = 
-	\begin{cases} \ip[\cf]{g_L}{f} = \vg_L^T \mW \vf, & g_L\in \cf   \text{ is the \alert{representer} of } L, \;  
+	L(f) =  \vlambda_L^T \vf  =
+	\begin{cases} \ip[\cf]{g_L}{f} = \vg_L^T \mW \vf, & g_L\in \cf   \text{ is the \alert{representer} of } L, \;
 		g_L(x) = L(K(\cdot,x)) \\
 		\ip[\cm \times \cf]{\lambda_L}{f} : = \int_\Omega f(x) \, \lambda_L(\dif x), & \vlambda_L = \mW \vg_L
 	\end{cases}
@@ -214,50 +256,50 @@ Common assumptions:
     \item $\cf_0$ and $\cm_0$ are any sets; let $\cf_1 = \spann(\cf_0)$ and $\cm_1 = \spann(\cm_0)$
 
     \item Let $\ip[\cf_1 \times \cf_1]{\cdot}{\cdot}: \cf_1 \times \cf_1 \to \reals$ and $\ip[\cm_1 \times \cm_1]{\cdot}{\cdot}: \cm_1 \times \cm_1 \to \reals$ be inner products
-    
+
     \item Let $\ip[\cm_1 \times \cf_1]{\cdot}{\cdot}: \cm_1 \times \cf_1 \to \reals$ be bilinear
 
     \item  Let $\cf$ be the completion of $\cf_1$ under $\norm[\cf_1]{\cdot}= \sqrt{\ip[\cf_1 \times \cf_1]{\cdot}{\cdot}}$
-    
-    \item Let $\cm$ be the completion of $\cm_1$ under $\norm[\cm_1]{\cdot}= \sqrt{\ip[\cm_1 \times \cm_1]{\cdot}{\cdot}}$
-\end{itemize} 
 
-\begin{theorem} 
+    \item Let $\cm$ be the completion of $\cm_1$ under $\norm[\cm_1]{\cdot}= \sqrt{\ip[\cm_1 \times \cm_1]{\cdot}{\cdot}}$
+\end{itemize}
+
+\begin{theorem}
 Then
 % \begin{itemize}
 %     \item $\ip{\cdot}{\cdot}$ is bilinear for $\cm_1 \times \cf_1$.
 %     \item If $\norm[\cf_1]{\cdot} = \sqrt{\ip[\cf_1 \times \cf_1]{\cdot}{\cdot}}$, and $\cf$ is the completion of $\cf_1$ under $\norm[\cf_1]{\cdot}$
 % \end{itemize}
 \end{theorem}
-    
+
 \end{frame}
 
 \begin{frame}[label = RKRd]{Reproducing Kernels for Functions on $\{1, \ldots, d\}$, aka Vectors}
-	
+
 	\vspace{-3ex}
 	Let $\cf:=$ all functions on $\Omega := \{1, \ldots, d\} \text{ ``$=$'' } \reals^d$
-	
+
 	Pick a symmetric, positive definite (positive eigenvalues) matrix $\mW \in \reals^{d \times d}$ to define an inner product \vspace{-0.3ex}
 	\[
 	\ip{f}{h} : = \vf^T \mW \vh, \quad \forall f, h \in \cf, \qquad \text{where } \vf = \bigl(f(t) \bigr)_{t=1}^d
 	\]
-	\alert{Reproducing kernel}, $K$, is defined by 
+	\alert{Reproducing kernel}, $K$, is defined by
 			$\bigl ( K(t,x) \bigr)_{t,x=1}^d = \mK := \mW^{-1}$, and has the properties
 		\vspace{-0.5ex}
 		\begin{gather*}
 			\alert{\text{Symmetry }} K(t,x) = K(x,t) \text{ because $\mW$ is symmetric and thus so is $\mK$} \\
 			\alert{\text{Positive Definiteness }} \bigl(  K(x_i,x_j)\bigr)_{i,j = 1}^n \text{ is positive definite for any distinct } x_1, \ldots, x_n \in \{1, \ldots, d\}\\
 			\alert{\text{Belonging }} K(\cdot,x) = \text{$x^{\text{th}}$ column of $\mK$} =: \vK_x \in \cf\\
-			\alert{\text{Reproduction }} \ip{K(\cdot,x)}{f} = \vK_x^T \mW \vf = \ve_x \vf = f(x) \quad \text{since } \mK := \mW^{-1};  \qquad 
+			\alert{\text{Reproduction }} \ip{K(\cdot,x)}{f} = \vK_x^T \mW \vf = \ve_x \vf = f(x) \quad \text{since } \mK := \mW^{-1};  \qquad
 				\ve_x := (0, \ldots, 0, \underbrace{1}_{x^{\text{th}} \text{ position}}, 0, \ldots )^T
 		\end{gather*}
-	
-	
+
+
 \end{frame}
 \begin{frame}{Squared Exponential Kernel on $\reals$}
-	
+
 	\begin{tabular}{m{0.5\textwidth}m{0.5\textwidth}}
-		The squared exponential (aka Gaussian) kernel for univariate functions takes the form 
+		The squared exponential (aka Gaussian) kernel for univariate functions takes the form
 		\[
 		K(t,x) = A \exp\bigl(-\gamma^2\abs{t-x}^2 \bigr) , \qquad t, x \in \reals
 		\]
@@ -273,7 +315,7 @@ Then
 
 \begin{frame}{Squared Exponential Kernel on $\reals^d$}
 	\begin{tabular}{m{0.6\textwidth}m{0.4\textwidth}}
-		The squared exponential kernel for $d$-variate functions takes the form 
+		The squared exponential kernel for $d$-variate functions takes the form
 		\begin{multline*}
 			K(t,x) = A \exp\bigl(-\gamma_1^2\abs{t_1-x_1}^2 - \cdots - \gamma_d^2\abs{t_d-x_d}^2 \bigr) , \\
 			t, x \in \reals
@@ -287,11 +329,11 @@ Then
 		&
 		\includegraphics[width=0.38\textwidth]{RK2-sqexpker.eps}
 	\end{tabular}
-	
+
 \end{frame}
 
 \begin{frame}{Mat\'ern Kernels}
-	
+
 	\vspace{-5ex}
 	\begin{tabular}{b{0.5\textwidth}p{0.5\textwidth}}
 		A popular family of kernels with a range of smoothness depending on $r$ with an associate norm that is not simple to write down:
@@ -302,24 +344,24 @@ Then
 		K_{1/2}(\vt,\vx) & = A_{1/2} \exp(-\gamma\norm[2]{\vt - \vx} )  \quad \alert{\text{not very smooth}} \\
 		K_{3/2}(\vt,\vx) & = A_{3/2} (1 + \gamma\norm[2]{\vt - \vx} ) \exp(-\gamma\norm[2]{\vt - \vx} )  \quad \alert{\text{somewhat  smoother}}
 	\end{align*}
-	
-	
+
+
 \end{frame}
 
 \begin{frame}{The Centered Discrepancy Kernel \cite{Hic97a}}
 	\vspace{-2ex}
 	\begin{tabular}{m{0.6\textwidth}m{0.4\textwidth}}
 		A reproducing kernel used to analyze cubatures gives the weighted centered discrepancy takes the form
-		
+
 		\vspace{-4ex}
 		\begin{multline*}
 			K(\vt,\vx) : = \prod_{k=1}^d \Bigl[ 1 + \frac {\gamma_j}2 \bigl\{ \abs{t_k - 1/2} + \abs{x_k -1/2} - \abs{t_k-x_k} \bigr\} \Bigr]. \\
 			\vt, \vx \in [0,1]^d
 		\end{multline*}
-		
+
 		\vspace{-2ex}
 		which corresponds to the Hilbert space for functions defined on $[0,1]^d$ with the following norm:
-		
+
 		\vspace{-4ex}
 		\begin{gather*}
 			\norm[2]{D^{\vm} f}^2 := \int_{\reals^d} \abs{\frac{\partial^{\norm[1]{\vm}}f(\vx)}{\partial x_1^{m_1} \cdots \partial x_d^{m_d}}}^2 \bigg \rvert_{x_j = 1/2 \text{ for } m_j = 0} \, \prod_{j \text{ s.t. } m_j > 0} \dif x_j  \\
@@ -336,17 +378,17 @@ Then
 \begin{frame}{The Delta Kernel}
 	\vspace{-2ex}
 	\begin{tabular}{m{0.5\textwidth}m{0.5\textwidth}}
-		A reproducing kernel with an uncountable basis is 
-		
+		A reproducing kernel with an uncountable basis is
+
 		\vspace{-4ex}
 		\begin{equation*}
 			K(\vt,\vx) : = \begin{cases} 1 + \gamma, & \vt = \vx, \\ 1, & \text{otherwise}, \end{cases}
 			\qquad \vt, \vx \in [0,1]^d
 		\end{equation*}
-		
+
 		\vspace{-2ex}
 		which corresponds to the Hilbert space for functions that are a constant everywhere except possibly at a countable number of points.
-		
+
 		\vspace{-4ex}
 		\begin{gather*}
 			I(f) = \int_{[0,1]^d} f(\vx) \, \dif \vx \\
@@ -369,8 +411,8 @@ Then
 \begin{frame}{Reproducing Kernels Identify Representers}
 
 \vspace{-4ex}
-	Suppose that  $(\cf,\ip{\cdot}{\cdot})$  is a Hilbert space of functions on $\Omega$ with \alert{unique reproducing kernel}  $K: \Omega \times \Omega \to \reals$ 
-	
+	Suppose that  $(\cf,\ip{\cdot}{\cdot})$  is a Hilbert space of functions on $\Omega$ with \alert{unique reproducing kernel}  $K: \Omega \times \Omega \to \reals$
+
 Riesz Representation Theorem says that for any bounded $\LIN : \cf \to \reals$ there exists a \alert{representer} $g \in \cf$ such that $\LIN(f)  =  \ip{g}{f} $ for all $f \in \cf$.  \alert{What is $g$?}
 \begin{gather*}
 	g(\vx) \underbrace{=}_{\text{reproduction}} \ip{K(\cdot,\vx)}{g} \underbrace{=}_{\text{symmetry}}  \ip{g}{K(\cdot,\vx)} \underbrace{=}_{\text{representer}} \LIN\bigl(K(\cdot,\vx)\bigr) \qquad \forall \vx \in \Omega\\
@@ -407,20 +449,20 @@ Let $\cf$ \uncover<1-3>{$:=$ all functions on $\{1, \ldots, d\} \text{ ``$=$'' }
 \[
 \only<1-3>{\ip{f}{h} : = \vf^T \mW \vh, \quad \forall f, h \in \cf, \qquad \text{where } \vf = \bigl(f(t) \bigr)_{t=1}^d} \only<4>{\alert{\mW \text{ is gone}}} \vspace{-0.7ex}
 \]
-\uncover<2-4>{\alert{Reproducing kernel}, $K$, \uncover<1-3>{is defined by 
+\uncover<2-4>{\alert{Reproducing kernel}, $K$, \uncover<1-3>{is defined by
 $\bigl ( K(t,x) \bigr)_{t,x=1}^d = \mK := \mW^{-1}$, and }has the properties
 \vspace{-0.5ex}
 \begin{gather*}
     \alert{\text{Symmetry }} K(t,x) = K(x,t) \uncover<1-3>{\text{ because $\mW$ is symmetric and thus so is $\mK$}} \\
     \alert{\text{Positive Definiteness }} \bigl(  K(x_i,x_j)\bigr)_{i,j = 1}^n \text{ is positive definite for any distinct } x_1, \ldots, x_n \in \{1, \ldots, d\}\\
      \alert{\text{Belonging }} K(\cdot,x)\uncover<1-3>{ = \text{$x^{\text{th}}$ column of $\mK$} =: \vK_x} \in \cf\\
-    \alert{\text{Reproduction }} \ip{K(\cdot,x)}{f} \uncover<1-3>{= \vK_x^T \mW \vf = \ve_x \vf} = f(x) \uncover<1-3>{\quad \text{since } \mK := \mW^{-1};  \qquad 
+    \alert{\text{Reproduction }} \ip{K(\cdot,x)}{f} \uncover<1-3>{= \vK_x^T \mW \vf = \ve_x \vf} = f(x) \uncover<1-3>{\quad \text{since } \mK := \mW^{-1};  \qquad
  \ve_x := (0, \ldots, 0, \underbrace{1}_{x^{\text{th}} \text{ position}}, 0, \ldots )^T}
 \end{gather*}
 \uncover<3->{\alert{Riesz Representation Theorem} says that \uncover<1-3>{for any linear function, $\LIN$, there is a \alert{representer} $g$ such that} $\LIN(f) = \ip{g}{f}\uncover<1-3>{ = \vg^T \mW \vf}$\uncover<1-3>{.  Note}
 \[
-\begin{pmatrix} g(1) \\ \vdots \\ g(d)\end{pmatrix} 
-\uncover<1-3>{= \vg = \mK \mW \vg 
+\begin{pmatrix} g(1) \\ \vdots \\ g(d)\end{pmatrix}
+\uncover<1-3>{= \vg = \mK \mW \vg
 = \begin{pmatrix} \mK_1^T \mW \vg \\ \vdots \\ \mK_d^T \mW \vg\end{pmatrix}
 = \begin{pmatrix} \ip{K(\cdot,1)}{g} \\ \vdots \\ \ip{K(\cdot,d)}{g} \end{pmatrix}}
 = \begin{pmatrix} \LIN(K(\cdot,1)) \\ \vdots \\  \LIN(K(\cdot,d)) \end{pmatrix}
@@ -446,17 +488,17 @@ $\bigl ( K(t,x) \bigr)_{t,x=1}^d = \mK := \mW^{-1}$, and }has the properties
 
 
 \begin{frame}{Hilbert Spaces of Signed Measures}
-	
+
 	\vspace{-4ex}
 	Let $\cm$ be the Hilbert spaced of  measures on $\Omega$ that is the completion of $\{c_1 \delta_{\vx_1} + \cdots + c_n \delta_{\vx_n} :  n \in \naturals, \vc \in \reals^n \}$ under the norm induced by
 	\begin{equation*}
 		\ip[\cm]{\mu}{\nu} := \int_{\Omega \times \Omega} K(\vt,\vx) \, (\mu \times \nu) (\dif \vt \times \dif \vx)
 	\end{equation*}
-	and $\delta_{\vx}$ is the Dirac measure, i.e., $\int_{\Omega} f(\vt) \, \delta_\vx(\dif \vt) = f(\vx)$.  There exists a one-to-one and onto, isometric  (I think) mapping $T : \cm \to \cf$ defined as 
+	and $\delta_{\vx}$ is the Dirac measure, i.e., $\int_{\Omega} f(\vt) \, \delta_\vx(\dif \vt) = f(\vx)$.  There exists a one-to-one and onto, isometric  (I think) mapping $T : \cm \to \cf$ defined as
 		\begin{equation*}
 			T(\mu)(\vx) := \int_\Omega K(\vt, \vx) \, \mu(\dif t) \qquad \forall x \in \Omega, \mu \in \cm
 		\end{equation*}
-Good question:  is there a measure $\omega $ on $\Omega \times \Omega$ such that 
+Good question:  is there a measure $\omega $ on $\Omega \times \Omega$ such that
 		\begin{equation*}
       \int_{\Omega \times \Omega} K(\vt, \vs)K(\vu,\vx) \, \omega(\dif \vs \times \dif \vu)  = K(\vt,\vx) \qquad \forall \vt, \vx \in \Omega?
 \end{equation*}
@@ -465,7 +507,7 @@ This would be like the $\mW$ for functions on $\{1, \ldots, d\}$
 \end{frame}
 
 \begin{frame}{Hilbert Spaces with Countable Bases}
-	
+
 \vspace{-4ex}
 Hilbert spaces of functions on $\Omega$ with countable bases can be written in terms of an $L^2(\Omega)$ basis
 
@@ -480,7 +522,7 @@ and the reproducing kernel is
 \begin{gather*}
 K(\vt,\vx) =  \sum_{\vk} \lambda_\vk \varphi_\vk(\vt) \varphi_\vk(\vx),  \qquad
 \text{note that }  \int_\Omega K(\vx,\vx) \, \dif \vx = \sum_{\vk} \lambda_\vk  < \infty, \quad \text{so } \lambda_{\vk} \to 0 \\
-\ip{f}{g} := \sum_{\vk} \frac{\hf(\vk) \hg(\vk)}{\lambda_\vk}, \qquad \text{since this implies } 
+\ip{f}{g} := \sum_{\vk} \frac{\hf(\vk) \hg(\vk)}{\lambda_\vk}, \qquad \text{since this implies }
 \ip{K(\cdot,\vx)}{f} := \sum_{\vk} \frac{\lambda_\vk \varphi_\vk(\vx) \hf(k)}{\lambda_\vk} = \sum_{\vk} \varphi_\vk(\vx) \hf(k) =  f(\vx)
 \end{gather*}
 
@@ -489,9 +531,9 @@ If we formally define the distribution $m(\vx) = \sum_{\vk} \frac{\hf(\vk) \varp
 
 \vspace{-2ex}
 \[
-\int_{\Omega} K(\vt,\vx) m(\vt) \, \dif \vt = 
-\int_{\Omega}  \sum_{\vk,\vl} \lambda_\vk \varphi_\vk(\vt) \varphi_\vk(\vx) 
-\frac{\hf(\vl) \varphi_\vl(\vt)}{\lambda_\vl}  \, \dif \vt = 
+\int_{\Omega} K(\vt,\vx) m(\vt) \, \dif \vt =
+\int_{\Omega}  \sum_{\vk,\vl} \lambda_\vk \varphi_\vk(\vt) \varphi_\vk(\vx)
+\frac{\hf(\vl) \varphi_\vl(\vt)}{\lambda_\vl}  \, \dif \vt =
 \sum_{\vk}  \varphi_\vk(\vx) \hf(\vk) = f(\vx)
 \]
 So this $m(\vx) \dif \vx$ seems to be the $\mu(\dif \vx)$ that gets mapped into $f$
@@ -513,14 +555,14 @@ So this $m(\vx) \dif \vx$ seems to be the $\mu(\dif \vx)$ that gets mapped into 
 \begin{frame}{Error for Approximating Linear Functionals}
 
 \vspace{-4ex}
-Suppose that 
+Suppose that
 
 \vspace{-2ex}
 \begin{itemize}
     \item Linear $\SOL : \cf \to \reals$ is the desired \alert{solution} (integral, derivative at a point, etc.)
-    
+
     \item $\mX = (\vx_1, \ldots, \vx_n)^T$ is the array of \alert{data sites}
-    
+
     \item $\APP_{\mX,\valpha}(f) = \alpha_{1} f(\vx_1) + \cdots + \alpha_{n} f(\vx_n) = \valpha^T f(\mX)$ is the \alert{approximation}
 \end{itemize}
 
@@ -544,18 +586,18 @@ Optimal weights are $\valpha = K(\mX,\mX)^{-1} \SOL\bigl(K(\mX,\cdot) \bigr)$; o
 \begin{frame}{Optimal Function Approximation}
 	Consider function evaluation at $\vx$, i.e., $\SOL_\vx(f)  = f(\vx)$.  In this case,
 	\[
-	\SOL_\vx^{\cdot\cdot} \Bigl(\SOL_\vx^\cdot\bigl(K(\cdot,\cdot \cdot)\bigr) \Bigr) = K(\vx,\vx), \qquad 
+	\SOL_\vx^{\cdot\cdot} \Bigl(\SOL_\vx^\cdot\bigl(K(\cdot,\cdot \cdot)\bigr) \Bigr) = K(\vx,\vx), \qquad
 	 \SOL_\vx\bigl(K(\mX,\cdot) = K(\mX,\vx)
 	\]
-	and the optimal algorithm is 
+	and the optimal algorithm is
 	\begin{align*}
 	\APP_{\vx,\mX,\opt}(f) &= K(\vx,\mX) K(\mX,\mX)^{-1} f(\mX)\\
-	\abs{f(\vx) - K(\vx,\mX) K(\mX,\mX)^{-1} f(\mX)}^2 &\le  
-	\bigl[ K(\vx,\vx) 
+	\abs{f(\vx) - K(\vx,\mX) K(\mX,\mX)^{-1} f(\mX)}^2 &\le
+	\bigl[ K(\vx,\vx)
 	- K(\vx,\mX) K(\mX,\mX)^{-1}  K(\mX,\vx) \bigr] \norm{f}^2 \\
-	& \le  
-	\underbrace{\bigl[ K(\vx,\vx) 
-	- K(\vx,\mX) K(\mX,\mX)^{-1}  K(\mX,\vx) \bigr]}_{\text{only depends on }\mX} 
+	& \le
+	\underbrace{\bigl[ K(\vx,\vx)
+	- K(\vx,\mX) K(\mX,\mX)^{-1}  K(\mX,\vx) \bigr]}_{\text{only depends on }\mX}
 \bignorm{f - \underbrace{K(\cdot,\mX) K(\mX,\mX)^{-1} f(\mX)}_{\text{best approximation to } f}}^2
 	\end{align*}
 Note that $\APP_{\cdot,\mX,\opt}(f)$ is in the Hilbert space, and even in the span of $K(\cdot,\vx_1), \ldots, K(\cdot,\vx_n)$.
@@ -565,7 +607,7 @@ Also note that the optimal linear approximation for an arbitrary linear function
 
 \begin{frame}{Why Is the Optimal Approximation Linear?}
 	\vspace{-4ex}
-	Fix $\vx \in \Omega$.  Let 
+	Fix $\vx \in \Omega$.  Let
 	\begin{align*}
 		\cb_{\mX,f(\mX),R} & = \{ g \in \cf  :  \norm{g}^2 \le R^2 + \norm{ \APP_{\cdot,\mX,\opt}(f)} ^2, \ g(\mX) = f(\mX)\}  \quad \text{functions that look like $f$}\\
 		\cb_{\mX,\perp,R} & = \{h \in \cf :  \norm{h} \le R, \ h(\mX) = \vzero\} \qquad \text{functions that vanish at the data sites} \\
@@ -574,8 +616,8 @@ Also note that the optimal linear approximation for an arbitrary linear function
 Note that any $g \in \cb_{\mX,f(\mX),R}$ may be written as $g = \APP_{\cdot,\mX,\opt}(f) + g_\perp$ with $g_\perp \in \cb_{\mX,\perp,R}$
 	\begin{gather*}
 	y_{\opt} := \argmin_{y \in \reals}  \ERR(y) \\
-	\ERR(y) : = \max_{g \in \cb_{\mX,f(\mX),R} } \abs{g(\vx) - y} 
-	=  \max_{g_\perp \in \cb_{\mX,\perp,R}} \abs{ \APP_{\vx,\mX,\opt}(f) + g_\perp(\vx) - y} 
+	\ERR(y) : = \max_{g \in \cb_{\mX,f(\mX),R} } \abs{g(\vx) - y}
+	=  \max_{g_\perp \in \cb_{\mX,\perp,R}} \abs{ \APP_{\vx,\mX,\opt}(f) + g_\perp(\vx) - y}
 	\end{gather*}
 Since for every $g_\perp \in  \cb_{\mX,\perp,R}$ it also is true that  $-g_\perp \in  \cb_{\mX,\perp,R}$, the optimal choice of $y$ is $\APP_{\vx,\mX,\opt}(f)$.
 \end{frame}
@@ -602,13 +644,13 @@ Since for every $g_\perp \in  \cb_{\mX,\perp,R}$ it also is true that  $-g_\perp
 
 \vspace{-3ex}
     What seems \alert{obvious} for two-dimensional vectors becomes a power tool for \alert{numerical analysis}
-    
+
     \begin{description}
     \item[Obvious]<2-> If $\LIN: \reals^2 \to \reals$ is any \alert{linear, real-valued} function, \uncover<2-4>{meaning,
     \[
     \LIN(c\vf + \vh) = c \LIN(\vf) + \LIN(\vh) \qquad \forall \vf, \vh \in \reals^2, \ c \in \reals,
     \]}
-    then $\LIN(\vf)$ can be represented as an \alert{inner product}\uncover<2-4>{: $\exists$ \alert{coefficient} $\vg \in \reals^2$ such that 
+    then $\LIN(\vf)$ can be represented as an \alert{inner product}\uncover<2-4>{: $\exists$ \alert{coefficient} $\vg \in \reals^2$ such that
     \[
     \LIN(\vf) = g_1 f_1 + g_2 f_2 = \vg^T \vf =: \ip{\vg}{\vf} \equiv \vg \bigcdot \vf \quad \forall \vf \in \reals^2.
     \]}
@@ -630,11 +672,11 @@ Since for every $g_\perp \in  \cb_{\mX,\perp,R}$ it also is true that  $-g_\perp
 		\]
 \only<1>{My most cited paper \cite{Hic97a} according to \href{https://scholar.google.com/citations?user=dJbMJG8AAAAJ&hl=en}{\beamergotobutton{Google Scholar}} is a \alert{simple application} of the Riesz Representation Theorem}%
 \only<2>{You can pick \alert{reproducing kernel} $K$ well and analyze
-		
+
 		\vspace{-3ex}
 \begin{description}
     \item[Convergence] How fast $\BAD(\vx_1, \ldots, \vx_n) \to 0$ with $n$ for clever $\vx_1, \vx_2, \ldots$
-     \item[Tractability] How this convergence depends on $d$ 
+     \item[Tractability] How this convergence depends on $d$
 \end{description}
 }
 \end{frame}
@@ -656,8 +698,8 @@ Since for every $g_\perp \in  \cb_{\mX,\perp,R}$ it also is true that  $-g_\perp
     & = \ip{\vg}{\vf}, \qquad \text{where } \vg = \bigl( \LIN(\ve_1), \LIN(\ve_2) \bigr)^T \qedhere
     \end{align*} \vspace{-3.8ex}\phantom{a}}%
     \only<3->{Done.
-    
-\alert{Uniqueness.} If $\vg$ and $\tvg$ are both representers, i.e., $\LIN(\vf) =  \ip{\vg}{\vf} =  \ip{\tvg}{\vf}$ for all $\vf \in \reals^d$, then 
+
+\alert{Uniqueness.} If $\vg$ and $\tvg$ are both representers, i.e., $\LIN(\vf) =  \ip{\vg}{\vf} =  \ip{\tvg}{\vf}$ for all $\vf \in \reals^d$, then
 \[
 0 = \LIN(\vg - \tvg) - \LIN(\vg - \tvg)= \ip{\vg}{\vg - \tvg} - \ip{\tvg}{\vg - \tvg} = \ip{\vg - \tvg}{\vg - \tvg} = \norm{\vg - \tvg}^2
 \]
@@ -681,13 +723,13 @@ so $\vg - \tvg = \vzero$ and $\vg = \tvg$.}%
 \begin{columns}
 \begin{column}{0.5\textwidth}
 My experience with $\vf \bigcdot \vh \equiv \ip{\vf}{\vh}$
-	
+
 \begin{description}
 \setlength{\itemsep}{3ex}
 \item[Geometry] (Euclidean, crow flying) distance/size/length/norm: $\norm{\vf} := \sqrt{f_1^2 + f_2^2}$ \\
 Pythagorean Theorem
 
-\item[Trigonometry] 
+\item[Trigonometry]
 Law of cosines: \\
 \hspace{-10ex}$\norm{\vf-\vh}^2 = \norm{\vf}^2 + \norm{\vh}^2 - 2 \norm{\vf}\norm{\vh}\cos(\measuredangle(\vf,\vh))$
 
@@ -700,15 +742,15 @@ $\vf \bigcdot \vh = f_1h_1 + f_2 h_2$
     \only<1>{\begin{center}
      \includegraphics[width=\textwidth]{ProgramsImages/fhfmh.eps}
      \end{center}}\only<2>{\alert{Right way} to think about $\ip{f}{h}$ for arbitrary vectors spaces $V$, e.g., spaces of functions.
- 
+
  \medskip
- 
+
 Inner product \alert{first}:  $\ip{\cdot}{\cdot} :  V \times V \to \reals$ satisfying
  \vspace{-1.5ex}
  \begin{gather*}
  \ip{0}{0} =0, \quad \ip{f}{f} > 0 \; \forall f \ne 0, \quad
  \ip{f}{h} =\ip{h}{f} \\
-  \ip{cf+h}{k} = c \ip{f}{k} + c\ip{h}{k} 
+  \ip{cf+h}{k} = c \ip{f}{k} + c\ip{h}{k}
  \end{gather*}
 
 \vspace{-1.5ex}
@@ -720,9 +762,9 @@ Then distance and cosine
  	\cos(\measuredangle(f,h)) & : = \frac{\ip{f}{h}}{\norm{f}\norm{h}}  \\
  	& \in [-1,1] \text{ by Cauchy-Schwartz \hyperlink{CSProof}{\beamergotobutton{Proof}}}
   \end{align*}
- 
+
  \vspace{-1.5ex}
- Law of cosines follows 
+ Law of cosines follows
 
 }
 \end{column}
@@ -737,9 +779,9 @@ Then distance and cosine
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[label = generalRiesz]{Riesz Representation Theorem for a Hilbert Space $(V,\ip{\cdot}{\cdot})$}
-	
+
 	\vspace{-1ex}
-\begin{theorem}[Riesz Representation Theorem for Hilbert Spaces] 
+\begin{theorem}[Riesz Representation Theorem for Hilbert Spaces]
     If $\LIN: V \to \reals$ is any \alert{bounded} linear real-valued function on the \alert{Hilbert space} $(V,\ip{\cdot}{\cdot})$, then there \alert{exists a unique} $g \in V$, called the \alert{representer} of $\LIN$, for which $\LIN(f) =  \ip{g}{f}$ for all $f \in V$.
 \end{theorem}
 \only<1>{
@@ -750,7 +792,7 @@ Then distance and cosine
     & \qquad \text{e.g., $\reals$ is complete, $\mathbb{Q}$ is not} \\
     & \qquad \text{may be \alert{infinite} dimensional, e.g., all $f:[0,1] \to \reals$ with a first derivative} \\
     \alert{\text{bounded }} & \text{means } \sup_{f \in V} \frac{\abs{\LIN(f)}}{\norm{f}} < \infty \text{ (automatic for finite dimensional $V$, but \hyperlink{lindisc}{\beamergotobutton{look here}})} \\
-    & \qquad \text{linear $+$ bounded $\implies$ continuous, 
+    & \qquad \text{linear $+$ bounded $\implies$ continuous,
     	\qquad linear $+$ continuous  $\implies$ bounded}
 \end{align*}
 
@@ -763,7 +805,7 @@ Can we prove this theorem \alert{without referring to a basis} for $V$?}
 \uncover<4->{\[
 \begin{aligned}
 \LIN(h) & = \LIN\bigl(\LIN(f) g_\perp - \LIN(g_\perp)f \bigr) \\
-& = \LIN(f)\LIN(g_\perp) - \LIN(g_\perp)\LIN(f) = 0, 
+& = \LIN(f)\LIN(g_\perp) - \LIN(g_\perp)\LIN(f) = 0,
 \end{aligned}
 \]
 
@@ -781,46 +823,46 @@ so $h \in \ker(\LIN)$.  \uncover<5->{The choice of $g_\perp$ implies that
 \end{tabular}
 }
 \only<6->{Done.
-	
+
 \alert{Uniqueness.} Same proof as before.} \qedhere
 \end{proof}}
-    
+
 \end{frame}
 
 
 
 
 \begin{frame}{What Can We Do with the Riesz Representation Theorem?}
-	
+
 	\vspace{-1ex}
-	
-\begin{theorem}[\only<4>{Preliminary }Error Bound for Numerical Integration] 
+
+\begin{theorem}[\only<4>{Preliminary }Error Bound for Numerical Integration]
 	Let $(V,\ip{\cdot}{\cdot})$ be a Hilbert space of functions on $[0,1]^d$.  Suppose that integration and function evaluation are both bounded, linear real-valued functions on $V$.  Then the error of approximating the integral of a function in $V$ by the sample mean is
 		\[
     	\abs{\int_{[0,1]^d} f(\vt) \, \dif \vt - \frac 1n \sum_{i=1}^n f(\vx_i) }
-    				= \abs{\ip{\eta}{f}} = \abs{\cos\bigl(\measuredangle(\eta,f) \bigr)} \norm{\eta} \norm{f} 
+    				= \abs{\ip{\eta}{f}} = \abs{\cos\bigl(\measuredangle(\eta,f) \bigr)} \norm{\eta} \norm{f}
     				\le \norm{\eta} \norm{f} \qquad \forall f \in V,
 		\]
 		for some \alert{representer}  $\eta \in V$ that depends on $\vx_1, \ldots, \vx_n$, but not on $f$.
 
 	\end{theorem}
-	
+
 	\vspace{-1ex}
 \only<1,4>{\alert{Significance}
-	
+
 	\vspace{-2ex}
 
 \begin{itemize}
 	\item Error bound separates the $f$ dependent part from the algorithm dependent part $(\eta)$
-	
+
 	\item Algorithm developers can concentrate on making $\norm{\eta}$ small
-	
+
 	\item  Providential if  $\eta$ is nearly orthogonal to $f$ \cite{Hic17a}, but don't count on it
-	
+
 	\item<4> \alert{How to find $\eta$?}
 \end{itemize}}
 \only<2,3>{\begin{proof}
-		Note that 
+		Note that
 		$
 		\INT : f \mapsto \int_{[0,1]^d} f(\vt) \, \dif \vt$ and $\AVG: f \mapsto \frac 1n \sum_{i=1}^n f(\vx_i)
 		$
@@ -838,20 +880,20 @@ so $h \in \ker(\LIN)$.  \uncover<5->{The choice of $g_\perp$ implies that
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[label = RK]{Reproducing Kernels \cite{Aro50}}
-	Suppose that  $(V,\ip{\cdot}{\cdot})$  is  Hilbert space of functions on $\Omega$ for which \alert{function evaluation is a bounded}, linear functional.  Then there exists, $K: \Omega \times \Omega \to \reals$ called a \alert{reproducing kernel} for which 
+	Suppose that  $(V,\ip{\cdot}{\cdot})$  is  Hilbert space of functions on $\Omega$ for which \alert{function evaluation is a bounded}, linear functional.  Then there exists, $K: \Omega \times \Omega \to \reals$ called a \alert{reproducing kernel} for which
 	\begin{equation*}
 		\underbrace{K(\vt,\vx) = K(\vx,\vt)}_{\text{symmetry}},  \quad \underbrace{K(\cdot,\vx) \in V}_{\text{belonging}}, \quad  \underbrace{f(\vx) = \ip{K(\cdot,\vx)}{f}}_{\text{reproduction}}  \qquad \forall \vt, \vx \in \Omega, \; f \in V
 	\end{equation*}
 	\only<1>{What do reproducing kernels look like for $V=\reals^d$ \hyperlink{RKRd}{\beamergotobutton{Look here}}}
 \uncover<2->{Combining with the Riesz Reproduction Theorem
 \begin{gather*}
-	\ERR(f) := \int_{[0,1]^d} f(\vt) \, \dif \vt - \frac 1n \sum_{i=1}^n f(\vx_i) 
+	\ERR(f) := \int_{[0,1]^d} f(\vt) \, \dif \vt - \frac 1n \sum_{i=1}^n f(\vx_i)
 	= \ip{\eta}{f}, \qquad \text{\alert{representer} } \eta = ?\\
-	\eta(\vx) \underbrace{=}_{\text{reproduction}} \ip{K(\cdot,\vx)}{\eta} \underbrace{=}_{\text{symmetry}}  \ip{\eta}{K(\cdot,\vx)} \underbrace{=}_{\text{representer}} \ERR\bigl(K(\cdot,\vx)\bigr) 
+	\eta(\vx) \underbrace{=}_{\text{reproduction}} \ip{K(\cdot,\vx)}{\eta} \underbrace{=}_{\text{symmetry}}  \ip{\eta}{K(\cdot,\vx)} \underbrace{=}_{\text{representer}} \ERR\bigl(K(\cdot,\vx)\bigr)
 	\uncover<3->{= \int_{[0,1]^d} K(\vt,\vx) \, \dif \vt- \frac 1n \sum_{i=1}^n K(\vx_i,\vx) \\
-		\uncover<4->{\norm{\eta}^2 = \ip{\eta}{\eta} \underbrace{=}_{\text{representer}} \ERR(\eta) 
+		\uncover<4->{\norm{\eta}^2 = \ip{\eta}{\eta} \underbrace{=}_{\text{representer}} \ERR(\eta)
 			\uncover<5->{= \int_{[0,1]^{2d}} K(\vt,\vx) \, \dif \vt \, \dif \vx
-				-  \frac 2n \sum_{i=1}^n \int_{[0,1]^d} K(\vx_i,\vx)  \, \dif \vx 
+				-  \frac 2n \sum_{i=1}^n \int_{[0,1]^d} K(\vx_i,\vx)  \, \dif \vx
 				+  \frac 1{n^2} \sum_{i,j=1}^n K(\vx_i,\vx_j)
 			}
 		}
@@ -862,25 +904,25 @@ so $h \in \ker(\LIN)$.  \uncover<5->{The choice of $g_\perp$ implies that
 
 
 \begin{frame}[label = KH]{Putting It Together}
-	
+
 	\vspace{-2ex}
-	
-	\begin{theorem}[Error Bound for Numerical Integration] 
+
+	\begin{theorem}[Error Bound for Numerical Integration]
 		Let $(V,\ip{\cdot}{\cdot})$ be a Hilbert space of functions on $[0,1]^d$ with reproducing kernel, $K$.  Suppose that integration and function evaluation are both bounded, linear real-valued functions on $V$.  Then the error of approximating the integral of a function in $V$ by the sample mean is
 		\[
 		\abs{\int_{[0,1]^d} f(\vt) \, \dif \vx - \frac 1n \sum_{i=1}^n f(\vx_i) }
 		\le \BAD(\vx_1, \ldots, \vx_n) \BAD(f),
 		\]
-		where 
+		where
 		\begin{gather*}
 			\BAD^2(\vx_1, \ldots, \vx_n) =  \int_{[0,1]^{2d}} K(\vt,\vx) \, \dif \vt \, \dif \vx
-			-  \frac 2n \sum_{i=1}^n \int_{[0,1]^d} K(\vx_i,\vx)  \, \dif \vx 
+			-  \frac 2n \sum_{i=1}^n \int_{[0,1]^d} K(\vx_i,\vx)  \, \dif \vx
 			+  \frac 1{n^2} \sum_{i,j=1}^n K(\vx_i,\vx_j) ,\\
 			\BAD(f) = \norm{f}.
 		\end{gather*}
-		
+
 	\end{theorem}
-	
+
 	\vspace{-2ex}
 	For an explicit example of a $K$ and $\BAD(\vx_1, \ldots, \vx_n)$ \hyperlink{CDKH}{\beamergotobutton{Look here}}
 \end{frame}
@@ -910,7 +952,7 @@ so $h \in \ker(\LIN)$.  \uncover<5->{The choice of $g_\perp$ implies that
 \vspace{-3ex}
 Short answer: $V$ must be \alert{infinite dimensional}
 
-\uncover<2>{Consider a vector space of real-valued sequences with the typical inner product:  
+\uncover<2>{Consider a vector space of real-valued sequences with the typical inner product:
 \[
 V := \{\vf = (f_1, f_2, \ldots)^T : f_i \in \reals, \norm{\vf} < \infty \}, \qquad \ip{\vf}{\vh} := f_1 h_1 + f_2h_2 + f_3h_3 + \cdots
 \]
@@ -930,7 +972,7 @@ Cannot guarantee that $\abs{\LIN(\vf)}$ is small enough, no matter how small you
 
 
 \begin{frame}[label = CSProof]{Proof of the Cauchy-Schwarz Inequality \hyperlink{dotproduct}{\beamerreturnbutton{Back}}}
-	
+
 	\begin{theorem}[Cauchy-Schwarz] Let $(V,\ip{\cdot}{\cdot})$ be a real-valued inner product space.  Then
 		\begin{equation}\tag{C-S} \label{eq:C-S}
 		\abs{\ip{f}{h}} \le \norm{f} \norm{h} \qquad \forall f, h \in V,
@@ -941,24 +983,24 @@ Cannot guarantee that $\abs{\LIN(\vf)}$ is small enough, no matter how small you
 \only<1>{\begin{proof}[Proof of Inequality]
 	If $f$ or $h$ are zero, the inequality becomes an equality by direct calculation.  For any nonzero $f, h \in V$, define the quadratic polynomial $p$ as follows:
 		\begin{equation*}
-			p(t) :=  \norm{t f + h}^2 = \ip{t f + h}{t f + h} = t^2 \ip{f}{f} + 2t \ip{f}{h} + \ip{h}{h} 
+			p(t) :=  \norm{t f + h}^2 = \ip{t f + h}{t f + h} = t^2 \ip{f}{f} + 2t \ip{f}{h} + \ip{h}{h}
 			= t^2 \norm{f}^2 + 2t \ip{f}{h} + \norm{h}^2.
-		\end{equation*} 
-		Since $p(t) \ge 0$ by definition, $p$ cannot have two roots, which means that  $\bigl(\ip{f}{h}\bigr)^2 - \norm{f}^2 \norm{h}^2$ must be non-positive.  This implies the inequality for $\abs{\ip{f}{h}}$. 
+		\end{equation*}
+		Since $p(t) \ge 0$ by definition, $p$ cannot have two roots, which means that  $\bigl(\ip{f}{h}\bigr)^2 - \norm{f}^2 \norm{h}^2$ must be non-positive.  This implies the inequality for $\abs{\ip{f}{h}}$.
 \end{proof}}
 \only<2->{\begin{proof}[Proof of Equality]
 		Recall that
 		\begin{equation*}
 			p(t) :=  \norm{t f + h}^2
 			= t^2 \norm{f}^2 + 2t \ip{f}{h} + \norm{h}^2.
-		\end{equation*} 
+		\end{equation*}
 		Equality in \eqref{eq:C-S} happens iff $\abs{\ip{f}{h}} = \norm{f} \norm{h}$, which implies that $p$ has a single root, $t_0$.  Then
 		\[
 		0 = p(t_0) = \norm{t_0 f + h}^2,
 		\]
-		which is true iff $t_0 f + h = 0$ by the definition of a norm. 
+		which is true iff $t_0 f + h = 0$ by the definition of a norm.
 \end{proof}}
-	
+
 \end{frame}
 
 
@@ -970,8 +1012,8 @@ Cannot guarantee that $\abs{\LIN(\vf)}$ is small enough, no matter how small you
 	\end{lemma}
 	\vspace{-1ex}
 	\begin{proof}
-	\only<1>{	Define $\dist\bigl(h,\ker(\LIN)\bigr) := \inf\{ \norm{h - f} : f \in \ker(\LIN)\}$, i.e., the closest $\ker(\LIN)$ comes to $h$.  For any $h \notin \ker(\LIN)$, choose $k_n \in \ker(\LIN)$ such that $\norm{h - k_n}^2 \le \dist^2\bigl(h,\ker(\LIN)\bigr) + 1/n$ for $n = 1, 2, \ldots$.  By the \alert{parallelogram law}, 
-		
+	\only<1>{	Define $\dist\bigl(h,\ker(\LIN)\bigr) := \inf\{ \norm{h - f} : f \in \ker(\LIN)\}$, i.e., the closest $\ker(\LIN)$ comes to $h$.  For any $h \notin \ker(\LIN)$, choose $k_n \in \ker(\LIN)$ such that $\norm{h - k_n}^2 \le \dist^2\bigl(h,\ker(\LIN)\bigr) + 1/n$ for $n = 1, 2, \ldots$.  By the \alert{parallelogram law},
+
 		\vspace{-3.5ex}
 		\begin{align*}
 			\norm{k_m - k_n}^2 &= \norm{(k_m - h) - (k_n-h) }^2 = 2\norm{k_m - h}^2 + 2\norm{k_n-h}^2 - \norm{(k_m - h) + (k_n-h) }^2 \\
@@ -979,22 +1021,22 @@ Cannot guarantee that $\abs{\LIN(\vf)}$ is small enough, no matter how small you
 			& \le 2\bigl[\dist^2\bigl(h,\ker(\LIN)\bigr) + 1/m] + 2\bigl[\dist^2\bigl(h,\ker(\LIN)\bigr) + 1/n] \\
 			&\qquad \qquad - 4\dist^2\bigl(h,\ker(\LIN)\bigr) = 2(1/m+1/n)
 		\end{align*}
-		
+
 		\vspace{-2ex}
 		So, $k_n \to k \in V$ due to \alert{completeness} of $V$; $k \in \ker(\LIN)$ due to continuity of $\LIN$.
-		
+
 		\vspace{-1.5ex}
 		\[
 		\norm{h-k} = \lim_{n \to \infty} \norm{h-k_n} =  \lim_{n \to \infty} \sqrt{\dist^2\bigl(h,\ker(\LIN)\bigr) + 1/n} = \dist\bigl(h,\ker(\LIN)\bigr)
 		\]
 		}%
-		\only<2->{Let $g_\perp = h-k$.  Since $h \notin \ker(\LIN)$ and $k \in \ker(\LIN)$, then $h\ne k$ and 
+		\only<2->{Let $g_\perp = h-k$.  Since $h \notin \ker(\LIN)$ and $k \in \ker(\LIN)$, then $h\ne k$ and
 		\[
 		\norm{g_\perp} = \norm{h-k} = \dist\bigl(h,\ker(\LIN)\bigr) \ne 0.
 		\]
 		Pick any $f \in \ker(\LIN)$, and note that $k + tf \in \ker(\LIN)$ for all $t \in \reals$.  Thus,
  		\begin{align*}
- 		\norm{g_\perp}^2 &\le \norm{h - (k+ tf)}^2 = \norm{g_\perp -tf}^2 
+ 		\norm{g_\perp}^2 &\le \norm{h - (k+ tf)}^2 = \norm{g_\perp -tf}^2
  		= \norm{g_\perp}^2 - 2t \ip{g_\perp}{f} + t^2 \norm{f}^2\\
  		0 & \le t \bigl[ -2\ip{g_\perp}{f} + t \norm{f}^2 \bigr] \qquad \forall t \in \reals
  		\end{align*}
@@ -1011,11 +1053,11 @@ The functions have domain $\Omega := \{1, \ldots, d\}$, and are represented as v
 \[
 \ip{f}{h} : = \vf^T \mA \vh, \qquad \text{where } \vf = \bigl(f(i) \bigr)_{i=1}^d.
 \]
-Then the reproducing kernel, $K$, is defined by 
+Then the reproducing kernel, $K$, is defined by
 \[
 \bigl ( K(i,j) \bigr)_{i,j=1}^d = \mK := \mA^{-1}.
 \]
-Note that 
+Note that
 \begin{gather*}
     K(i,j) = K(j,i) \text{ because $\mA$ is symmetric and thus so is $\mK$} \\
     K(\cdot,j) = \text{$j^{\text{th}}$ column of $\mK$} =: \vK_j \in \reals^d = V\\
@@ -1043,7 +1085,7 @@ Requires $\Order(dn^2)$ operations to compute}
 \begin{multline*}
 \norm{f}^2 : = \abs{f(1/2, \ldots, 1/2)}^2 \\
 + \int_{[0,1]} \abs{\frac{\partial f}{\partial x_1}(x_1, 1/2, \ldots, 1/2)}^2 \, \dif x_1 + \int_{[0,1]} \abs{\frac{\partial f}{\partial x_1}(1/2, x_2, 1/2, \ldots, 1/2)}^2 \, \dif x_2 + \cdots \\
-+ \int_{[0,1]^2} \abs{\frac{\partial^2 f}{\partial x_1 \partial x_2}(x_1, x_2,1/2, \ldots, 1/2)}^2 \, \dif x_1\dif x_2 + \cdots 
++ \int_{[0,1]^2} \abs{\frac{\partial^2 f}{\partial x_1 \partial x_2}(x_1, x_2,1/2, \ldots, 1/2)}^2 \, \dif x_1\dif x_2 + \cdots
 + \int_{[0,1]^d} \abs{\frac{\partial^d f}{\partial x_1 \cdots \partial x_d}(\vx)}^2 \, \dif \vx
 \end{multline*}
 \[
