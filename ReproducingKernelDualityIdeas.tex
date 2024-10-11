@@ -72,11 +72,13 @@ Please interrupt and ask questions}
 %\event{Happy Fred}
 \date[]{ revised \today}
 
+%%%%%%%%%%%%TikZ Stuff%%%%%%%%%%%%%%%%%%%%%%%
 
 \colorlet{lightblue}{blue!15}
 \colorlet{lightyellow}{yellow!20}
 \colorlet{lightorange}{orange!20}
 \colorlet{lightgreen}{green!20}
+\colorlet{lightred}{red!15}
 
 \usetikzlibrary{positioning}
 \tikzset{
@@ -90,6 +92,15 @@ Please interrupt and ask questions}
 	nd/.default = lightblue
 }
 
+\newcommand{\lpos}{2.5}
+\newcommand{\cpos}{7.5}
+\newcommand{\rpos}{12.5}
+\newcommand{\dpos}{1.4}
+\newcommand{\mpos}{2.85}
+\newcommand{\upos}{4.5}
+
+
+%%%%%%%%%%%%TikZ Stuff%%%%%%%%%%%%%%%%%%%%%%%
 
 \input FJHDef.tex
 
@@ -111,68 +122,65 @@ Please interrupt and ask questions}
 
 	\begin{tikzpicture}[every path/.style={<-, ultra thick}]
 		\draw[help lines] grid (15,7);
-		\node[nd, text width = {}] (Hnaught) at (7.5,0.25) {$\ch_0 = \spann\{ K(\cdot, x) : x \in \Omega\}$};
+		\node[nd, text width = {}] (Hnaught) at (\cpos,0.25) {$\ch_0 = \spann\{ K(\cdot, x) : x \in \Omega\}$};
 
 		\uncover<2->{
-		\node[nd = lightyellow] (preH) at (2.5,1.5)
-		{%$(\ch_0, \langle \cdot,\cdot \rangle_{\ch_0})$ \\
-			$\langle K(\cdot, t), K(\cdot,x) \rangle_{\ch_0} := K(t,x)
-		%$\Bigl \langle \sum_i a_i K(\cdot, x_i), \sum_j b_j K(\cdot,x_j) \Big \rangle_{\ch_0} :=  \va^T \mK \vb, \ \mK = \Bigl( K(x_i,x_j) \Bigr)_{i,j=1}^n
-		%\sum_{i,j} a_i K(x_i,x_j) b_j
-        $};
+		\node[nd = lightyellow] (preH) at (\lpos,\dpos)
+		{$\langle K(\cdot, t), K(\cdot,x) \rangle_{\ch_0} := K(t,x)$};
         \draw[<-] (preH) -- (Hnaught.west);
 
         \uncover<3->{
-		\node[above = .5cm of preH.north, nd = lightyellow] (H)
+		\node[nd = lightyellow] at (\lpos,\mpos) (H)
 		{$(\ch, \langle \cdot,\cdot \rangle_{\ch}) :=$  the completion of $(\ch_0, \langle \cdot,\cdot \rangle_{\ch_0})$ }
 		edge (preH);
 
         \uncover<4->{
-        \node[above = 5cm of Hnaught.north, nd = lightorange, text width = {}] (linear)
+        \node[nd = lightorange, text width = {}] at (\cpos,6) (linear)
         {$\ch' := \{\text{bounded, linear}$ \\ $\text{functionals on } (\ch, \langle \cdot,\cdot \rangle_{\ch})  \}$};
 
         \uncover<5->{
-        \node[above = .5cm of H.north, nd = lightyellow] (Riesz)
+        \node[nd = lightyellow] at (\lpos,\upos) (Riesz)
 		{Riesz and reproducing: \\ $\forall L \in \ch'$, let $\eta_L(x) : = L(K(\cdot,x))$\\
 			  Then
 		$L(f) = \langle \eta_L,f \rangle_{\ch} \ \forall f \in \ch$}
 		edge (H) edge (linear);
 
         \uncover<6->{
-        \node[above = 0.5 cm of Hnaught.north, nd = lightgreen] (preLtwo)
-        {%$(\ch_0, \langle \cdot,\cdot \rangle_{L^2})$ \\
-        $\langle f, g \rangle_{L^2} := \int_\Omega f(x) g(x) \, \varrho(x) \,\dif x$}
-        %	$\langle K(\cdot, t), K(\cdot,x) \rangle_{L^2} := \int_\Omega K(y, t) K(y,x) \, \varrho(t) \,\dif y$}
-%        	$\Bigl \langle \sum_i a_i K(\cdot, x_i), \sum_j b_j K(\cdot,x_j) \Big \rangle_{L^2} := \sum_{i,j} a_i b_j \int_\Omega K(t,x_i) K(t,x_j) \, \varrho(t) \,\dif t$}
-        	edge (Hnaught);
+        \node[nd = lightgreen] at (\cpos,\dpos) (preLtwo)
+        {$\langle f, g \rangle_{L^2} := \int_\Omega f(x) g(x) \, \varrho(x) \,\dif x$}
+        edge (Hnaught);
 
         \uncover<7->{
-		\node[above = .5cm of preLtwo.north, nd = lightgreen] (F)
+		\node[nd = lightgreen] at (\cpos,\mpos) (F)
 		{$(\cf, \langle \cdot,\cdot \rangle_{L^2}) :=$  the completion of $(\ch_0, \langle \cdot,\cdot \rangle_{L^2})$ }
 		edge (preLtwo);
 
         \uncover<8->{
-        \node[nd = lightgreen] (preG) at (12.5,1.6)
-        {%$(\ch_0, \langle \cdot,\cdot \rangle_{\cg})$ \\
-        	$\langle f, g \rangle_{\cg} := \int_{\Omega^2} f(t) K(t,x) g(x) \, \varrho(t) \varrho(x) \,\dif t \dif x$};
-        	%$\Bigl \langle \sum_i a_i K(\cdot, x_i), \sum_j b_j K(\cdot,x_j) \Big \rangle_{\cg} :=  \va^T \mK^{-1} \vb$};
+        \node[nd = lightred] (preG) at (\rpos,\dpos)
+        {$\langle f, g \rangle_{\cg} := \int_{\Omega^2} f(t) K(t,x) g(x) \, \varrho(t) \varrho(x) \,\dif t \dif x$};
         \draw[<-] (preG) -- (Hnaught.east);
 
+        \uncover<9->{
+		\node[nd = lightred] (G) at (\rpos,\mpos)
+		{$(\cg, \langle \cdot,\cdot \rangle_{L^2}) :=$  the completion of $(\ch_0, \langle 	\cdot,\cdot \rangle_{\cg})$};
+		\draw[<-] (G) -- (preG);
 
 
+        \uncover<10->{
+		\node[nd = lightred] (GasHp) at (\rpos,\upos)
+		{$\forall L \in \ch', \exists g_L \in \cg \ \ni$ \\
+			$L(f) = \langle g_L,f \rangle_{L^2} \ \forall f \in \ch$}
+			edge (G);
+		\draw[<-] (GasHp) -- (linear);
 
-        }
 
+        \uncover<11->{
+		\node[nd = lightred] (HLtwo) at (\cpos,\upos)
+		{$\ch = \{x \mapsto \langle K(\cdot,x), g \rangle_{L^2} : g \in \cg \}$}
+		edge (H) edge (G);
 
+		} } } } } } } } } }
 
-        }
-
-
-        }
-        }
-		}
-		}
-		}
 	\end{tikzpicture}
 
 
