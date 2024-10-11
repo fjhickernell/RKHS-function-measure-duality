@@ -118,10 +118,10 @@ Please interrupt and ask questions}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[fragile]{Diagram}
+\begin{frame}[fragile]{Diagram of Reproducing Kernel Hilbert Spaces and Their Relatives}
 
 	\begin{tikzpicture}[every path/.style={<-, ultra thick}]
-		\draw[help lines] grid (15,7);
+		%\draw[help lines] grid (15,7);
 		\node[nd, text width = {}] (Hnaught) at (\cpos,0.25) {$\ch_0 = \spann\{ K(\cdot, x) : x \in \Omega\}$};
 
 		\uncover<2->{
@@ -131,7 +131,7 @@ Please interrupt and ask questions}
 
         \uncover<3->{
 		\node[nd = lightyellow] at (\lpos,\mpos) (H)
-		{$(\ch, \langle \cdot,\cdot \rangle_{\ch}) :=$  the completion of $(\ch_0, \langle \cdot,\cdot \rangle_{\ch_0})$ }
+		{$(\ch, \langle \cdot,\cdot \rangle_{\ch}) :=$  completion of $(\ch_0, \langle \cdot,\cdot \rangle_{\ch_0})$ }
 		edge (preH);
 
         \uncover<4->{
@@ -152,7 +152,7 @@ Please interrupt and ask questions}
 
         \uncover<7->{
 		\node[nd = lightgreen] at (\cpos,\mpos) (F)
-		{$(\cf, \langle \cdot,\cdot \rangle_{L^2}) :=$  the completion of $(\ch_0, \langle \cdot,\cdot \rangle_{L^2})$ }
+		{$(\cf, \langle \cdot,\cdot \rangle_{L^2}) :=$  completion of $(\ch_0, \langle \cdot,\cdot \rangle_{L^2})$ }
 		edge (preLtwo);
 
         \uncover<8->{
@@ -162,7 +162,7 @@ Please interrupt and ask questions}
 
         \uncover<9->{
 		\node[nd = lightred] (G) at (\rpos,\mpos)
-		{$(\cg, \langle \cdot,\cdot \rangle_{L^2}) :=$  the completion of $(\ch_0, \langle 	\cdot,\cdot \rangle_{\cg})$};
+		{$(\cg, \langle \cdot,\cdot \rangle_{\cg}) :=$  completion of $(\ch_0, \langle 	\cdot,\cdot \rangle_{\cg})$};
 		\draw[<-] (G) -- (preG);
 
 
@@ -175,9 +175,9 @@ Please interrupt and ask questions}
 
 
         \uncover<11->{
-		\node[nd = lightred] (HLtwo) at (\cpos,\upos)
-		{$\ch = \{x \mapsto \langle K(\cdot,x), g \rangle_{L^2} : g \in \cg \}$}
-		edge (H) edge (G);
+		\node[nd = lightgreen] (HLtwo) at (\cpos,\upos)
+		{$\ch = \{ f : f(x) = \langle K(\cdot,x), g \rangle_{L^2},$ \\ $g \in \cg \}$}
+		edge[->] (H) edge (G);
 
 		} } } } } } } } } }
 
