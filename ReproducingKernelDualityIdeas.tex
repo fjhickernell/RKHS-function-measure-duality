@@ -98,6 +98,31 @@ Please interrupt and ask questions}
 \newcommand{\dpos}{1.4}
 \newcommand{\mpos}{2.85}
 \newcommand{\upos}{4.5}
+\newcommand{\Hnaughtnode}[2][]{\path #2 node[nd = lightblue, #1] (Hnaught)
+	{$\ch_0 = \spann\{ K(\cdot, x) : x \in \Omega\}$}}
+\newcommand{\preHnode}[2][]{\path #2 node[nd = lightyellow, #1] (preH)
+	{$\langle K(\cdot, t), K(\cdot,x) \rangle_{\ch_0} := K(t,x)$}}
+\newcommand{\Hnode}[2][]{\path #2 node[nd = lightyellow, #1] (H)
+	{$(\ch, \langle \cdot,\cdot \rangle_{\ch}) :=$  completion of $(\ch_0, \langle \cdot,\cdot \rangle_{\ch_0})$ }}
+\newcommand{\linearnode}[2][]{\path #2 node[nd = lightorange, #1] (linear)
+	{$\ch' := \{\text{bounded, linear}$ \\ $\text{functionals on } (\ch, \langle \cdot,\cdot \rangle_{\ch})\}$}}
+\newcommand{\Riesznode}[2][]{\path #2 node[nd = lightyellow] (Riesz)
+	{Riesz and reproducing: \\ $\forall L \in \ch'$, let $\eta_L(x) : = L(K(\cdot,x))$\\
+	Then $L(f) = \langle \eta_L,f \rangle_{\ch} \ \forall f \in \ch$}}
+\newcommand{\preLtwonode}[2][]{\path #2 node[nd = lightgreen] (preLtwo)
+	{$\langle f, g \rangle_{L^2} := \int_\Omega f(x) g(x) \, \varrho(x) \,\dif x$}}
+\newcommand{\Fnode}[2][]{\path #2 node[nd = lightgreen] (F)
+	{$(\cf, \langle \cdot,\cdot \rangle_{L^2}) :=$  completion of $(\ch_0, \langle \cdot,\cdot \rangle_{L^2})$ }}
+\newcommand{\preGnode}[2][]{\path #2 node[nd = lightred] (preG)
+	{$\langle f, g \rangle_{\cg} := \int_{\Omega^2} f(t) K(t,x) g(x) \, \varrho(t) \varrho(x) \,\dif t \dif x$}}
+\newcommand{\Gnode}[2][]{\path #2 node[nd = lightred] (G)
+	{$(\cg, \langle \cdot,\cdot \rangle_{\cg}) :=$  completion of $(\ch_0, \langle 	\cdot,\cdot \rangle_{\cg})$}}
+\newcommand{\GasHpnode}[2][]{\path #2node[nd = lightred] (GasHp)
+	{$\forall L \in \ch', \exists g_L \in \cg \ \ni$ \\
+	$L(f) = \langle g_L,f \rangle_{L^2} \ \forall f \in \ch$}}
+\newcommand{\HLtwonode}[2][]{\path #2 node[nd = lightgreen] (HLtwo) at (\cpos,\upos)
+	{$\ch = \{ f : f(x) = \langle K(\cdot,x), g \rangle_{L^2},$ \\ $g \in \cg \}$}}
+
 
 
 %%%%%%%%%%%%TikZ Stuff%%%%%%%%%%%%%%%%%%%%%%%
@@ -122,68 +147,44 @@ Please interrupt and ask questions}
 
 	\begin{tikzpicture}[every path/.style={<-, ultra thick}]
 		%\draw[help lines] grid (15,7);
-		\node[nd, text width = {}] (Hnaught) at (\cpos,0.25) {$\ch_0 = \spann\{ K(\cdot, x) : x \in \Omega\}$};
+		\Hnaughtnode{(\cpos,0.25)};
 
-		\uncover<2->{
-		\node[nd = lightyellow] (preH) at (\lpos,\dpos)
-		{$\langle K(\cdot, t), K(\cdot,x) \rangle_{\ch_0} := K(t,x)$};
-        \draw[<-] (preH) -- (Hnaught.west);
+		\uncover<2->{\preHnode{(\lpos,\dpos)};
+        	\draw[<-] (preH) -- (Hnaught.west);}
 
-        \uncover<3->{
-		\node[nd = lightyellow] at (\lpos,\mpos) (H)
-		{$(\ch, \langle \cdot,\cdot \rangle_{\ch}) :=$  completion of $(\ch_0, \langle \cdot,\cdot \rangle_{\ch_0})$ }
-		edge (preH);
+        \uncover<3->{\Hnode{(\lpos,\mpos)} edge (preH);}
 
-        \uncover<4->{
-        \node[nd = lightorange, text width = {}] at (\cpos,6) (linear)
-        {$\ch' := \{\text{bounded, linear}$ \\ $\text{functionals on } (\ch, \langle \cdot,\cdot \rangle_{\ch})  \}$};
+        \uncover<4->{\linearnode[text width = {}]{(\cpos,6)};}
 
-        \uncover<5->{
-        \node[nd = lightyellow] at (\lpos,\upos) (Riesz)
-		{Riesz and reproducing: \\ $\forall L \in \ch'$, let $\eta_L(x) : = L(K(\cdot,x))$\\
-			  Then
-		$L(f) = \langle \eta_L,f \rangle_{\ch} \ \forall f \in \ch$}
-		edge (H) edge (linear);
+        \uncover<5->{\Riesznode{(\lpos,\upos)} edge (H) edge (linear);}
 
-        \uncover<6->{
-        \node[nd = lightgreen] at (\cpos,\dpos) (preLtwo)
-        {$\langle f, g \rangle_{L^2} := \int_\Omega f(x) g(x) \, \varrho(x) \,\dif x$}
-        edge (Hnaught);
+        \uncover<6->{\preLtwonode{(\cpos,\dpos)} edge (Hnaught);}
 
-        \uncover<7->{
-		\node[nd = lightgreen] at (\cpos,\mpos) (F)
-		{$(\cf, \langle \cdot,\cdot \rangle_{L^2}) :=$  completion of $(\ch_0, \langle \cdot,\cdot \rangle_{L^2})$ }
-		edge (preLtwo);
+        \uncover<7->{\Fnode{(\cpos,\mpos)} edge (preLtwo);}
 
-        \uncover<8->{
-        \node[nd = lightred] (preG) at (\rpos,\dpos)
-        {$\langle f, g \rangle_{\cg} := \int_{\Omega^2} f(t) K(t,x) g(x) \, \varrho(t) \varrho(x) \,\dif t \dif x$};
-        \draw[<-] (preG) -- (Hnaught.east);
+        \uncover<8->{\preGnode{(\rpos,\dpos)};
+        \draw[<-] (preG) -- (Hnaught.east);}
 
-        \uncover<9->{
-		\node[nd = lightred] (G) at (\rpos,\mpos)
-		{$(\cg, \langle \cdot,\cdot \rangle_{\cg}) :=$  completion of $(\ch_0, \langle 	\cdot,\cdot \rangle_{\cg})$};
-		\draw[<-] (G) -- (preG);
+        \uncover<9->{\Gnode{(\rpos,\mpos)};
+		\draw[<-] (G) -- (preG);}
 
+        \uncover<10->{\GasHpnode{(\rpos,\upos)} edge (G);
+		\draw[<-] (GasHp) -- (linear);}
 
-        \uncover<10->{
-		\node[nd = lightred] (GasHp) at (\rpos,\upos)
-		{$\forall L \in \ch', \exists g_L \in \cg \ \ni$ \\
-			$L(f) = \langle g_L,f \rangle_{L^2} \ \forall f \in \ch$}
-			edge (G);
-		\draw[<-] (GasHp) -- (linear);
+        \uncover<11->{\HLtwonode{(\cpos,\upos)} edge[->] (H) edge (G);}
 
-
-        \uncover<11->{
-		\node[nd = lightgreen] (HLtwo) at (\cpos,\upos)
-		{$\ch = \{ f : f(x) = \langle K(\cdot,x), g \rangle_{L^2},$ \\ $g \in \cg \}$}
-		edge[->] (H) edge (G);
-
-		} } } } } } } } } }
 
 	\end{tikzpicture}
 
 
+\end{frame}
+
+
+\begin{frame}{\tikz[baseline = 0ex]{\Hnaughtnode[font = {}, text width = {}]{}}}
+	$K: \Omega \times \Omega \to \reals$ is called a \alert{kernel}; assume
+	\begin{itemize}
+		\item
+	\end{itemize}
 \end{frame}
 
 \end{document}
