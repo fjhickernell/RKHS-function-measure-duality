@@ -110,11 +110,11 @@ Please interrupt and ask questions}
 	{Riesz and reproducing: \\ $\forall L \in \ch'$, let $\eta_L(x) : = L(K(\cdot,x))$\\
 	Then $L(f) = \langle \eta_L,f \rangle_{\ch} \ \forall f \in \ch$}}
 \newcommand{\preLtwonode}[2][]{\path #2 node[nd = lightgreen] (preLtwo)
-	{$\langle f, g \rangle_{L^2} := \int_\Omega f(x) g(x) \, \varrho(x) \,\dif x$}}
+	{$\langle f, g \rangle_{L^2} := \int_\Omega f(x) g(x) \, \nu(\dif x) $}}
 \newcommand{\Fnode}[2][]{\path #2 node[nd = lightgreen] (F)
 	{$(\cf, \langle \cdot,\cdot \rangle_{L^2}) :=$  completion of $(\ch_0, \langle \cdot,\cdot \rangle_{L^2})$ }}
 \newcommand{\preGnode}[2][]{\path #2 node[nd = lightred] (preG)
-	{$\langle f, g \rangle_{\cg} := \int_{\Omega^2} f(t) K(t,x) g(x) \, \varrho(t) \varrho(x) \,\dif t \dif x$}}
+	{$\langle f, g \rangle_{\cg} := \int_{\Omega^2} f(t) K(t,x) g(x) \, \nu(\dif t) \nu(\dif x) \,\dif t \dif x$}}
 \newcommand{\Gnode}[2][]{\path #2 node[nd = lightred] (G)
 	{$(\cg, \langle \cdot,\cdot \rangle_{\cg}) :=$  completion of $(\ch_0, \langle 	\cdot,\cdot \rangle_{\cg})$}}
 \newcommand{\GasHpnode}[2][]{\path #2node[nd = lightred] (GasHp)
@@ -180,11 +180,25 @@ Please interrupt and ask questions}
 \end{frame}
 
 
-\begin{frame}{\tikz[baseline = 0ex]{\Hnaughtnode[font = {}, text width = {}]{}}}
-	$K: \Omega \times \Omega \to \reals$ is called a \alert{kernel}; assume
-	\begin{itemize}
-		\item
-	\end{itemize}
+\begin{frame}{\tikz[baseline = (Hnaught.base)]{\Hnaughtnode[font = {}, text width = {}]{}}}
+\begin{equation*}
+	\ch_0 = \left \{c_1 K(\cdot,x_1) + \cdots + c_n K(\cdot,x_n) : \vc \in \reals^n, \ \vx \in \Omega^n, \ n \in \naturals \right\}
+\end{equation*}
+
+\vspace{3ex}
+\uncover<2->{Examples where $\{K(\cdot,x) : x \in \Omega\}$ may be finite or infinite
+\begin{gather*}
+	\Omega = \{1, \ldots, m\}, \qquad K(t,x) = \begin{cases} 1, & t=x \\ 0, & t \ne x \end{cases}, \qquad \ch_0 = \reals^m \\
+	\Omega = [0,1], \qquad K(t,x) = 2 - \abs{t-x} \\
+	\Omega = \reals, \qquad K(t,x) = \exp(-(t-x)^2)
+\end{gather*}}
+\end{frame}
+
+\begin{frame}{\tikz[baseline = (preH.base)]{\preHnode[font = {}, text width = {}]{}}}
+	$K: \Omega \times \Omega \to \reals$ is called a (reproducing) \alert{kernel}; assume
+	\begin{description}
+		\item[Symmetry] $K(t,x) = K(t,x)$ for all $t,x \in \Omega$
+	\end{description}
 \end{frame}
 
 \end{document}
