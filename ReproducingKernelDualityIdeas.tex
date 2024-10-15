@@ -198,9 +198,36 @@ Please interrupt and ask questions}
 	$K: \Omega \times \Omega \to \reals$ is called a (reproducing) \alert{kernel}; assume
 	\begin{description}[\labelwidth = 20ex]
 		\item[Symmetry] $K(t,x) = K(t,x)$ for all $t,x \in \Omega$
-		\item[Positive definiteness] $\sum_{i,j=1}^n c_ic_jK(x_i,x_j) > 0$ for all $\vzero \ne \vc \in \reals^n$, $\vx \in \Omega^n$, $n \in \naturals$
+		\item[Positive definiteness] $\sum_{i,j=1}^n c_ic_jK(x_i,x_j) > 0$ for all $\vzero \ne \vc \in \reals^n$, distinct $x_1, \ldots, x_n \in \Omega$, $n \in \naturals$
 	\end{description}
+
+	Let $\langle \cdot, \cdot \rangle_{\ch_0} : \ch_0 \times \ch_0 \to \reals$ be a symmetric, bilinear form defined as above.  Then for all $ f = \sum_i a_i K(\cdot, x_i), \ g =  \sum_j b_j K(\cdot, x_j) \in \ch_0$, with distinct $x_1, x_2, \ldots$
+	\begin{align*}
+		\langle f,g \rangle & =\Bigl \langle \sum_i  a_i K(\cdot, x_i), \sum_j b_j K(\cdot, x_j) \Bigr \rangle =  \sum_{ij} a_i b_j \langle K(\cdot, x_i), K(\cdot, x_j) \rangle = \sum_{ij} a_i b_j  K( x_i, x_j) \\
+		& = \sum_{ij} b_i a_j K( x_i, x_j) = \langle g, f \rangle \\
+		\langle f, f\rangle &= \sum_{ij} a_i a_j K( x_i, x_j) > 0 \qquad \forall f \ne 0
+	\end{align*}
+
 \end{frame}
+
+\begin{frame}{\tikz[baseline = (preH.base)]{\preHnode[font = {}, text width = {}]{}} cont'd}
+\begin{itemize}
+	\item $(\ch_0,\langle \cdot, \cdot \rangle_{\ch_0})$ is an \alert{inner product space}
+	\item $K(\cdot,x)$ is the \alert{representer} of the evaluation functional because for all $f = \sum_{i} a_i K(\cdot,x_i) \in \ch_0$,
+	\[
+	\langle K(\cdot,x),f\rangle
+	= \Bigl \langle K(\cdot,x), \sum_{i} a_i K(\cdot,x_i) \Bigr \rangle_{\ch_0}
+	= \sum_{i} a_i \langle K(\cdot,x),  K(\cdot,x_i) \rangle_{\ch_0}
+	= \sum_{i} a_i K(x,x_i) = f(x)
+	\]
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{\tikz[baseline = (H.base)]{\Hnode[font = {}, text width = {}]{}}}
+	content...
+\end{frame}
+
 
 \end{document}
 
