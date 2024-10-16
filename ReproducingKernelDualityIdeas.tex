@@ -215,7 +215,7 @@ Please interrupt and ask questions}
 	\item $(\ch_0,\langle \cdot, \cdot \rangle_{\ch_0})$ is an \alert{inner product space}
 	\item $K(\cdot,x)$ is the \alert{representer} of the evaluation functional because for all $f = \sum_{i} a_i K(\cdot,x_i) \in \ch_0$,
 	\[
-	\langle K(\cdot,x),f\rangle
+	\langle K(\cdot,x),f\rangle_{\ch_0}
 	= \Bigl \langle K(\cdot,x), \sum_{i} a_i K(\cdot,x_i) \Bigr \rangle_{\ch_0}
 	= \sum_{i} a_i \langle K(\cdot,x),  K(\cdot,x_i) \rangle_{\ch_0}
 	= \sum_{i} a_i K(x,x_i) = f(x)
@@ -225,8 +225,28 @@ Please interrupt and ask questions}
 \end{frame}
 
 \begin{frame}{\tikz[baseline = (H.base)]{\Hnode[font = {}, text width = {}]{}}}
+
+This means adding the limits of \alert{Cauchy sequences}, e.g., $\ch_0 = \mathbb{Q}$ and $\ip[\ch_0]{f}{g} = fg$ leads to $\ch = \reals$
+
+Examples
+\begin{gather*}
+	\Omega = \{1, \ldots, m\}, \qquad K(t,x) = \begin{cases} 1, & t=x \\ 0, & t \ne x \end{cases}, \qquad \ch = \ch_0 \cong \reals^m, \qquad \ip[\ch]{f}{g} = \sum_{x = 1}^m f(x) g(x) \\
+	\Omega = [0,1], \qquad K(t,x) = 2 - \abs{t-x}, \qquad  \ip[\ch]{f}{g} = \\
+	\Omega = \reals, \qquad K(t,x) = \exp(-(t-x)^2), \qquad  \ip[\ch]{f}{g} =
+\end{gather*}
+
+\vspace{-3ex}
+\begin{itemize}
+	\item $K(\cdot,x)$ is the \alert{representer} of the evaluation functional, i.e., $f(x) = \langle K(\cdot,x),f\rangle_{\ch}$ for all $f\in \ch$
+	\item If $(\tch,\ip[\tch]{\cdot}{\cdot})$ is a Hilbert space with dense subspace $(\ch_0,\ip[\ch_0]{\cdot}{\cdot})$, then $(\tch,\ip[\tch]{\cdot}{\cdot}) = (\ch,\ip[\ch]{\cdot}{\cdot})$
+	\item $\ip[\ch]{\cdot}{\cdot}$ has to be \alert{guessed and verified}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
 	content...
 \end{frame}
+
 
 
 \end{document}
