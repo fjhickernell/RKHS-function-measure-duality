@@ -84,7 +84,7 @@ Please interrupt and ask questions}
 \usetikzlibrary{arrows.meta}
 \tikzset{
 	help lines /.append style ={dashed},
-	>=Stealth,
+	>={Stealth[scale=0.7]},
 	nd/.style ={draw = none,
 		text width = 4.5cm,
 		font = \small,
@@ -98,8 +98,9 @@ Please interrupt and ask questions}
 \newcommand{\cpos}{7.5}
 \newcommand{\rpos}{12.5}
 \newcommand{\dpos}{1.4}
-\newcommand{\mpos}{2.85}
-\newcommand{\upos}{4.5}
+\newcommand{\mpos}{3}
+\newcommand{\upos}{4.7}
+\newcommand{\uupos}{6}
 \newcommand{\Hnaughtnode}[2][]{\path #2 node[nd = lightblue, #1] (Hnaught)
 	{$\ch_0 = \spann\{ K(\cdot, x) : x \in \Omega\}$}}
 \newcommand{\preHnode}[2][]{\path #2 node[nd = lightyellow, #1] (preH)
@@ -116,7 +117,7 @@ Please interrupt and ask questions}
 \newcommand{\Fnode}[2][]{\path #2 node[nd = lightgreen] (F)
 	{$(\cf, \langle \cdot,\cdot \rangle_{L^2}) :=$  completion of $(\ch_0, \langle \cdot,\cdot \rangle_{L^2})$ }}
 \newcommand{\preGnode}[2][]{\path #2 node[nd = lightred] (preG)
-	{$\langle f, g \rangle_{\cg} := \int_{\Omega^2} f(t) K(t,x) g(x) \, \nu(\dif t) \nu(\dif x) \,\dif t \dif x$}}
+	{$\langle f, g \rangle_{\cg} := \int_{\Omega^2} f(t) K(t,x) g(x) \, \nu(\dif t) \nu(\dif x)$}}
 \newcommand{\Gnode}[2][]{\path #2 node[nd = lightred] (G)
 	{$(\cg, \langle \cdot,\cdot \rangle_{\cg}) :=$  completion of $(\ch_0, \langle 	\cdot,\cdot \rangle_{\cg})$}}
 \newcommand{\GasHpnode}[2][]{\path #2node[nd = lightred] (GasHp)
@@ -147,6 +148,8 @@ Please interrupt and ask questions}
 
 \begin{frame}[fragile]{Diagram of Reproducing Kernel Hilbert Spaces and Their Relatives}
 
+	\vspace{-3ex}
+
 	\begin{tikzpicture}[every path/.style={<-, ultra thick}]
 		%\draw[help lines] grid (15,7);
 		\Hnaughtnode{(\cpos,0.25)};
@@ -156,7 +159,7 @@ Please interrupt and ask questions}
 
         \uncover<3->{\Hnode{(\lpos,\mpos)} edge (preH);}
 
-        \uncover<4->{\linearnode[text width = {}]{(\cpos,6)};}
+        \uncover<4->{\linearnode[text width = {}]{(\cpos,\uupos)};}
 
         \uncover<5->{\Riesznode{(\lpos,\upos)} edge (H) edge (linear);}
 
@@ -241,7 +244,7 @@ Examples
 \begin{itemize}
 	\item $K(\cdot,x)$ is the \alert{representer} of the evaluation functional, i.e., $f(x) = \langle K(\cdot,x),f\rangle_{\ch}$ for all $f\in \ch$
 	\item If $(\tch,\ip[\tch]{\cdot}{\cdot})$ is a Hilbert space with dense subspace $(\ch_0,\ip[\ch_0]{\cdot}{\cdot})$, then $(\tch,\ip[\tch]{\cdot}{\cdot}) = (\ch,\ip[\ch]{\cdot}{\cdot})$
-	\item $\ip[\ch]{\cdot}{\cdot}$ has to be \alert{guessed and verified}
+	\item $\ip[\ch]{f}{g}$ has to be \alert{guessed and verified} for $f,g \in \ch \setminus \ch_0$
 \end{itemize}
 \end{frame}
 
